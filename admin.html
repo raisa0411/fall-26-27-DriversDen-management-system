@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin dashboard of DriverDen">
+    <title>Admin Dashboard | DriverDen</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+        <a href="index.html" class="logo">Driver<span>Den</span></a>
+        <div class="user-info">
+            <span class="badge admin">Admin</span>
+            <span>Welcome, Raisa Tabassum</span>
+            <a href="index.html" class="btn btn-small btn-light">Logout</a>
+        </div>
+    </header>
+
+    <!-- ============ NAVIGATION: each button shows one section ============ -->
+    <nav class="topnav">
+        <button type="button" id="nav-dashboardSection" class="active"
+            onclick="showSection('dashboardSection')">Dashboard</button>
+        <button type="button" id="nav-usersSection" onclick="showSection('usersSection')">Manage Users</button>
+        <button type="button" id="nav-verificationSection"
+            onclick="showSection('verificationSection')">Verification</button>
+        <button type="button" id="nav-complaintsSection" onclick="showSection('complaintsSection')">Complaints</button>
+        <button type="button" id="nav-moderationSection" onclick="showSection('moderationSection')">Moderation</button>
+    </nav>
+
+    <main class="container">
+        <!--SECTION 1: DASHBOARD-->
+        <section id="dashboardSection" class="page-section active">
+            <h2 class="page-title">Admin Dashboard</h2>
+            <p class="page-subtitle">Overview of verification requests, customers, running services, and earnings
+                summaries.
+                <span id="reportTime" class="hint"></span>
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="statPendingVerif">0</div>
+                    <div class="stat-label">Pending Verifications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statCustomers">0</div>
+                    <div class="stat-label">Total Customers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statDrivers">0</div>
+                    <div class="stat-label">Total Drivers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statAgencies">0</div>
+                    <div class="stat-label">Total Agencies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statRunningServices">0</div>
+                    <div class="stat-label">Running Services</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statOpenComplaints">0</div>
+                    <div class="stat-label">Unresolved Complaints</div>
+                </div>
+            </div>
+
+            <!-- Customers Table -->
+            <div class="card">
+                <h3>Customers</h3>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Customer Name</th>
+                                <th>Email</th>
+                                <th>Customer ID</th>
+                                <th>Total Trips</th>
+                                <th>Total Amount Spent</th>
+                                <th>Account Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashCustomersBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Running Services Table -->
+            <div class="card">
+                <h3>Running Services</h3>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Contract ID</th>
+                                <th>Customer</th>
+                                <th>Driver</th>
+                                <th>Agency</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Monthly Salary</th>
+                                <th>Driver Earnings</th>
+                                <th>Platform Commission</th>
+                                <th>Agency Earnings</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashServicesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Earnings Summaries -->
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h3>Driver Earnings Summary</h3>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Driver Name</th>
+                                        <th>Experience</th>
+                                        <th>Monthly Salary</th>
+                                        <th>Platform Commission (10%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashDriverEarningsBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card">
+                        <h3>Agency Earnings Summary</h3>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Agency Name</th>
+                                        <th>Manager</th>
+                                        <th>Active Drivers</th>
+                                        <th>Area</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashAgencyEarningsBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--SECTION 2: MANAGE USERS (Create, Read, Update, Delete & Search)-->
+        <section id="usersSection" class="page-section">
+            <h2 class="page-title">Manage Users</h2>
+            <p class="page-subtitle">Create, view, edit, delete and search user accounts. </p>
+
+            <div id="userMessage" class="message"></div>
+
+            <div class="row">
+                <!-- CREATE / UPDATE form -->
+                <div class="col">
+                    <div class="card">
+                        <h3 id="userFormTitle">Add New User</h3>
+                        <form id="userForm" onsubmit="return saveUser()">
+                            <fieldset>
+                                <legend>User Details</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="userName">Full Name:</label></td>
+                                        <td>
+                                            <input type="text" id="userName" placeholder="e.g. Nadia Islam">
+                                            <span class="error" id="userNameError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="userUsername">Username:</label></td>
+                                        <td>
+                                            <input type="text" id="userUsername" placeholder="At least 4 characters">
+                                            <span class="error" id="userUsernameError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="userEmail">Email:</label></td>
+                                        <td>
+                                            <input type="email" id="userEmail" placeholder="name@driverden.com">
+                                            <span class="error" id="userEmailError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="userPassword">Password:</label></td>
+                                        <td>
+                                            <input type="password" id="userPassword"
+                                                placeholder="At least 8 characters">
+                                            <span class="error" id="userPasswordError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="userRole">Role:</label></td>
+                                        <td>
+                                            <select id="userRole">
+                                                <option value="">-- Select Role --</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="Agency Manager">Agency Manager</option>
+                                                <option value="Customer">Customer</option>
+                                                <option value="Driver">Driver</option>
+                                            </select>
+                                            <span class="error" id="userRoleError"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status:</td>
+                                        <td>
+                                            <input type="radio" id="statusActive" name="userStatus" value="Active"
+                                                checked>
+                                            <label for="statusActive" class="option-label">Active</label>
+                                            <input type="radio" id="statusBlocked" name="userStatus" value="Blocked">
+                                            <label for="statusBlocked" class="option-label">Blocked</label>
+                                            <input type="radio" id="statusPending" name="userStatus" value="Pending">
+                                            <label for="statusPending" class="option-label">Pending</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" id="userSaveButton" class="btn" value="Add User">
+                            <button type="button" class="btn btn-secondary" onclick="resetUserForm()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- READ + SEARCH table -->
+                <div class="col-wide">
+                    <div class="card">
+                        <h3>All Users</h3>
+                        <div class="search-bar">
+                            <input type="text" id="userSearch" placeholder="Search by name, username, email or id..."
+                                onkeyup="renderUsers()">
+                            <select id="userRoleFilter" onchange="renderUsers()">
+                                <option value="All">All roles</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Agency Manager">Agency Manager</option>
+                                <option value="Customer">Customer</option>
+                                <option value="Driver">Driver</option>
+                            </select>
+                            <select id="userStatusFilter" onchange="renderUsers()">
+                                <option value="All">Any status</option>
+                                <option value="Active">Active</option>
+                                <option value="Blocked">Blocked</option>
+                                <option value="Pending">Pending approval</option>
+                            </select>
+                        </div>
+                        <p class="result-count" id="userCount"></p>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--SECTION 3: VERIFICATION-->
+        <section id="verificationSection" class="page-section">
+            <h2 class="page-title">Verification</h2>
+            <p class="page-subtitle">Review and verify driver, customer and agency submissions</p>
+
+            <div id="verifMessage" class="message"></div>
+
+            <div class="row">
+                <div class="col-wide">
+                    <div class="card">
+                        <h3>Verification Requests</h3>
+                        <div class="search-bar">
+                            <select id="verifTypeFilter" onchange="renderVerifications()">
+                                <option value="All">All Types</option>
+                                <option value="Driver">Driver</option>
+                                <option value="Customer">Customer</option>
+                                <option value="Agency Manager">Agency Manager</option>
+                            </select>
+                            <select id="verifStatusFilter" onchange="renderVerifications()">
+                                <option value="All">All Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                            <input type="text" id="verifSearch" placeholder="Name or email..."
+                                onkeyup="renderVerifications()">
+                        </div>
+                        <p class="result-count" id="verifCount"></p>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Email</th>
+                                        <th>Documents</th>
+                                        <th>Submitted On</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="verifTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col" id="verifFormCol" style="display: none;">
+                    <div class="card">
+                        <h3 id="verifFormTitle">Submission Details</h3>
+                        <form id="verifForm" onsubmit="return submitVerification()">
+                            <fieldset>
+                                <legend id="verifLegend">Applicant Information</legend>
+                                <table class="form-table" id="verifFormFields"></table>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="verifDecisionSelect">Decision:</label></td>
+                                        <td>
+                                            <select id="verifDecisionSelect">
+                                                <option value="Approved">Accept</option>
+                                                <option value="Rejected">Reject</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="verifRejectionReason">Rejection Reason:</label></td>
+                                        <td>
+                                            <textarea id="verifRejectionReason" rows="4"
+                                                placeholder="Enter reason for rejection..."></textarea>
+                                            <span class="error" id="verifReasonError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" class="btn" value="Submit">
+                            <button type="button" class="btn btn-secondary" onclick="closeVerifForm()">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--SECTION 4: COMPLAINTS-->
+        <section id="complaintsSection" class="page-section">
+            <h2 class="page-title">Complaint Handling</h2>
+            <p class="page-subtitle">Review and respond to user complaints</p>
+
+            <div id="compMessage" class="message"></div>
+
+            <div class="row">
+                <div class="col-wide">
+                    <div class="card">
+                        <h3>User Complaints</h3>
+                        <div class="search-bar">
+                            <select id="compStatusFilter" onchange="renderComplaints()">
+                                <option value="All">All Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Resolved">Resolved</option>
+                            </select>
+                            <input type="text" id="compSearch" placeholder="User name or id..."
+                                onkeyup="renderComplaints()">
+                        </div>
+                        <p class="result-count" id="compCount"></p>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cl.No.</th>
+                                        <th>User</th>
+                                        <th>Subject</th>
+                                        <th>Category</th>
+                                        <th>Submitted on</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="compTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col" id="compFormCol" style="display: none;">
+                    <div class="card">
+                        <h3 id="compFormTitle">Complaints Details</h3>
+                        <form id="compForm" onsubmit="return submitComplaint()">
+                            <fieldset>
+                                <legend>Complaint &amp; Admin Response</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="compUserName">User Name:</label></td>
+                                        <td><input type="text" id="compUserName" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="compUserEmail">User Email:</label></td>
+                                        <td><input type="email" id="compUserEmail" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="compSubject">Subject:</label></td>
+                                        <td><input type="text" id="compSubject" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="compCategory">Category:</label></td>
+                                        <td><input type="text" id="compCategory" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="compDescription">Description:</label></td>
+                                        <td><textarea id="compDescription" rows="4" readonly></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="compSubmittedOn">Submitted On:</label></td>
+                                        <td><input type="text" id="compSubmittedOn" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="compStatusSelect">Status:</label></td>
+                                        <td>
+                                            <select id="compStatusSelect">
+                                                <option value="In Progress">In Progress</option>
+                                                <option value="Resolved">Resolved</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="compResponse">Response:</label></td>
+                                        <td>
+                                            <textarea id="compResponse" rows="5"
+                                                placeholder="Write your response here..."></textarea>
+                                            <span class="error" id="compResponseError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" class="btn" value="Submit">
+                            <button type="button" class="btn btn-secondary" onclick="closeCompForm()">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- SECTION 5: MODERATION -->
+        <section id="moderationSection" class="page-section">
+            <h2 class="page-title">Moderation</h2>
+            <p class="page-subtitle">Manage user accounts and reviews to maintain a safe and respectful community</p>
+
+            <div id="modMessage" class="message"></div>
+
+            <!-- Account Management -->
+            <div class="row">
+                <div class="col-wide">
+                    <div class="card">
+                        <h3>Account Management - Suspend or Restore Accounts</h3>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modAccountBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col" id="accountFormCol" style="display: none;">
+                    <div class="card">
+                        <h3>Account Details</h3>
+                        <form id="accountModForm" onsubmit="return submitAccountMod()">
+                            <fieldset>
+                                <legend>Account Action</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="modAccName">Username:</label></td>
+                                        <td><input type="text" id="modAccName" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="modAccEmail">Email:</label></td>
+                                        <td><input type="email" id="modAccEmail" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="modAccRole">Role:</label></td>
+                                        <td><input type="text" id="modAccRole" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="modAccAction">Action:</label></td>
+                                        <td>
+                                            <select id="modAccAction">
+                                                <option value="Blocked">Suspended</option>
+                                                <option value="Active">Restore</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="accountReason">Reason:</label></td>
+                                        <td>
+                                            <textarea id="accountReason" rows="4"
+                                                placeholder="Enter reason for this action..."></textarea>
+                                            <span class="error" id="accountReasonError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" class="btn" value="Submit">
+                            <button type="button" class="btn btn-secondary" onclick="closeAccountForm()">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Management -->
+            <div class="row">
+                <div class="col-wide">
+                    <div class="card">
+                        <h3>Review Management - Hide or Restore Reviews</h3>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Reviewer</th>
+                                        <th>Review Excerpt</th>
+                                        <th>Rating</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modReviewBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col" id="reviewFormCol" style="display: none;">
+                    <div class="card">
+                        <h3>Review Details</h3>
+                        <form id="reviewModForm" onsubmit="return submitReviewMod()">
+                            <fieldset>
+                                <legend>Review Action</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="modRevName">Reviewer:</label></td>
+                                        <td><input type="text" id="modRevName" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="modRevRating">Rating:</label></td>
+                                        <td><input type="text" id="modRevRating" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="modRevText">Review:</label></td>
+                                        <td><textarea id="modRevText" rows="4" readonly></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="modRevDate">Submitted On:</label></td>
+                                        <td><input type="text" id="modRevDate" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="modRevAction">Action:</label></td>
+                                        <td>
+                                            <select id="modRevAction">
+                                                <option value="Hidden">Hide</option>
+                                                <option value="Visible">Restore</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="reviewReason">Reason:</label></td>
+                                        <td>
+                                            <textarea id="reviewReason" rows="4"
+                                                placeholder="Enter reason for this action..."></textarea>
+                                            <span class="error" id="reviewReasonError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" class="btn" value="Submit">
+                            <button type="button" class="btn btn-secondary" onclick="closeReviewForm()">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action History -->
+            <div class="card">
+                <h3>Action History</h3>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date &amp; Time</th>
+                                <th>Type</th>
+                                <th>Message</th>
+                                <th>Performed By</th>
+                            </tr>
+                        </thead>
+                        <tbody id="actionHistoryBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        &copy; 2026 DriverDen &middot; CSC 3215 Web Technologies
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
