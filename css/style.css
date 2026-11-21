@@ -1,3 +1,427 @@
+/* PART D  Single-page dashboards, forms, tables and agency pages */
+/* Menu buttons look the same as the old menu links */
+.topnav {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.topnav button {
+    display: inline-block;
+    background-color: transparent;
+    color: #f2f2f2;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    padding: 12px 16px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.topnav button:hover {
+    background-color: rgb(108, 0, 86);
+    color: #ffffff;
+}
+
+.topnav button.active {
+    border-bottom: 3px solid #ffd1ff;
+    background-color: rgb(108, 0, 86);
+    color: #ffffff;
+}
+
+/* Keyboard focus stays visible everywhere (amber from the palette) */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 3px solid rgb(255, 140, 0);
+    outline-offset: 1px;
+}
+
+/* The required demo notice under the menu */
+.demo-label {
+    background-color: beige;
+    color: rgb(61, 0, 51);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 4px 12px;
+    line-height: 1.5;
+}
+
+/* Hidden until showSection() displays it */
+.page-section {
+    display: none;
+}
+
+.page-title {
+    color: rgb(0, 51, 93);
+    margin-bottom: 4px;
+}
+
+.page-section .page-subtitle {
+    text-align: left;
+    color: rgb(108, 0, 86);
+}
+
+.section-heading-left {
+    margin: 24px 0 10px 0;
+}
+
+/*AGENCY
+/* Driver Roster: prevent table clipping and keep columns & badges aligned */
+.row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.col {
+    flex: 0 0 300px;
+    min-width: 0;
+}
+
+.col-wide {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 7px 8px;
+    white-space: normal;
+    word-break: break-word;
+    vertical-align: middle;
+}
+
+.data-table .badge,
+.data-table .btn {
+    margin-bottom: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Keep Roster form on top and Members table full-width below */
+#rosterSection .row {
+    flex-direction: column;
+}
+
+#rosterSection .col,
+#rosterSection .col-wide {
+    flex: 1 1 auto;
+    width: 100%;
+}
+
+#rosterSection .data-table th,
+#rosterSection .data-table td {
+    white-space: nowrap;
+}
+
+#rosterSection .roster-top-row {
+    flex-direction: row;
+}
+
+@media (max-width: 860px) {
+    #rosterSection .roster-top-row {
+        flex-direction: column;
+    }
+}
+
+/* Search & filter bar spacing */
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.search-bar input[type="text"],
+.search-bar select {
+    margin: 0;
+}
+
+/* Invite dropdown width & readability */
+#inviteDriver {
+    width: 100%;
+    min-width: 165px;
+    min-height: 38px;
+    padding: 6px 8px;
+    background-color: #ffffff;
+    color: rgb(61, 0, 51);
+    border: 1px solid rgb(115, 0, 105);
+    border-radius: 5px;
+    appearance: auto;
+    -webkit-appearance: menulist;
+}
+
+/* No form field may be wider than the space it is in (phones) */
+input,
+select,
+textarea {
+    max-width: 100%;
+}
+
+fieldset {
+    min-width: 0;
+}
+
+/* Forms laid out in a two-column table (label | field) */
+.form-table {
+    width: 100%;
+    margin: 0;
+    background-color: transparent;
+}
+
+.form-table,
+.form-table td {
+    border: 0;
+}
+
+.form-table tr:hover {
+    background-color: transparent;
+}
+
+.form-table td {
+    padding: 6px 4px;
+    vertical-align: top;
+}
+
+.form-table td:first-child {
+    width: 34%;
+    padding-top: 10px;
+}
+
+.form-table input[type="text"],
+.form-table input[type="tel"],
+.form-table input[type="number"],
+.form-table input[type="date"],
+.form-table select,
+.form-table textarea {
+    width: 100%;
+}
+
+/* Red error text next to a field, written by showError() */
+.error {
+    display: block;
+    color: #b00020;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.form-buttons {
+    margin-top: 12px;
+}
+
+.inline-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.inline-form select {
+    min-width: 240px;
+}
+
+.inline-form .error {
+    flex-basis: 100%;
+}
+
+/* Extra button colours */
+.btn-success {
+    background-color: #2e7d32;
+}
+
+.btn-success:hover {
+    background-color: #1b5e20;
+}
+
+.btn-danger {
+    background-color: #b00020;
+}
+
+.btn-danger:hover {
+    background-color: #8a0019;
+}
+
+button:disabled,
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.empty-row {
+    color: rgb(108, 0, 86);
+    font-style: italic;
+    text-align: center;
+}
+
+.result-count {
+    color: rgb(108, 0, 86);
+    font-size: 0.9rem;
+}
+
+/* Status badges: always readable TEXT; the colour is only extra */
+.badge.green {
+    background-color: #2e7d32;
+    color: #ffffff;
+    margin-bottom: 0;
+}
+
+.badge.orange {
+    background-color: #b45309;
+    color: #ffffff;
+    margin-bottom: 0;
+}
+
+.badge.red {
+    background-color: #b00020;
+    color: #ffffff;
+    margin-bottom: 0;
+}
+
+.badge.grey {
+    background-color: #5f6368;
+    color: #ffffff;
+    margin-bottom: 0;
+}
+
+/* The team base has error and info messages; this adds success */
+.message.success {
+    display: block;
+    background-color: #e8f5e9;
+    color: #1b5e20;
+}
+
+.stat-card {
+    cursor: pointer;
+}
+
+/* Progress bar for staffed / headcount (agency) */
+.progress-track {
+    display: inline-block;
+    width: 140px;
+    height: 10px;
+    background-color: #ffffff;
+    border: 1px solid rgb(207, 0, 207);
+    border-radius: 5px;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: rgb(194, 0, 161);
+}
+
+/* Label | value table inside a request card & agency profile */
+.facts-table {
+    width: auto;
+    margin: 0 0 12px 0;
+    background-color: transparent;
+}
+
+.facts-table,
+.facts-table td {
+    border: 0;
+}
+
+.facts-table td {
+    padding: 2px 16px 2px 0;
+}
+
+.facts-table td:first-child {
+    color: rgb(108, 0, 86);
+}
+
+.why-list summary {
+    cursor: pointer;
+    color: rgb(140, 0, 140);
+    font-weight: 600;
+}
+
+.why-list ul {
+    margin: 6px 0 0 22px;
+}
+
+/* One offer / invitation box (driver page) */
+.offer-item {
+    border-left: 4px solid rgb(207, 0, 207);
+    background-color: beige;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+}
+
+
+/* PART E  Small screens (phones) */
+@media (max-width: 860px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .col,
+    .col-wide {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 16px;
+    }
+
+    .logo {
+        font-size: 28px;
+    }
+
+    .user-info {
+        flex-wrap: wrap;
+    }
+
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .form-table td:first-child {
+        width: 100%;
+        padding-top: 6px;
+    }
+
+    .inline-form select {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .container,
+    .dashboard-container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
 .page-section {
     display: none;
 }
