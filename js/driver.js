@@ -1,28 +1,8 @@
-/* =====================================================================
-   driver.js  -  Everything the Driver can do (driver.html)
-   Owner: Akash
-   ---------------------------------------------------------------------
-   CRUD + Search : My Availability (availabilitySlots array)
-   Unique 1      : My Profile and verification (form validation)
-   Unique 2      : My Offers - customer requests, agency invitations,
-                   agency job proposals and replacement requests
-   Unique 3      : Dashboard summary (counts worked out with loops)
-   ---------------------------------------------------------------------
-   Loaded after data.js and common.js:
-     data.js    the arrays of objects (inside seedData)
-     common.js  helpers: showSection, showError, showMessage,
-                isEmpty, isDigitsOnly, containsText, formatDate, ...
-   Like the other pages, the data lives in the browser's memory. It starts
-   again from data.js when the page is reloaded.
-   ===================================================================== */
-
 const sections = ["dashboardSection", "profileSection", "offersSection", "availabilitySection"];
 
-// The driver who is logged in. With the PHP backend this will come
-// from the session ($_SESSION) instead of being written here.
+
 const currentDriverId = "u-drv1";
 
-// Working references to the arrays inside seedData (data.js)
 let users = seedData.users;
 let driverProfiles = seedData.driverProfiles;
 let verificationSubmissions = seedData.verificationSubmissions;
@@ -35,7 +15,6 @@ let replacements = seedData.replacements;
 let contracts = seedData.contracts;
 let availabilitySlots = seedData.availability;
 
-// -1 means "adding a new availability record"; any other number is the index being edited
 let editSlotIndex = -1;
 
 const profileFields = ["name", "phone", "location", "experience", "salary", "vehicle", "summary", "document"];
@@ -43,16 +22,12 @@ const slotFields = ["availability", "startDate", "endDate", "reason"];
 const allowedExtensions = ["pdf", "jpg", "jpeg", "png"];
 
 
-/* =====================================================================
-   HELPERS FOR THIS PAGE
-   ===================================================================== */
 
-// Returns a NEW array without the element at "index" (slice + concat)
 function removeAt(list, index) {
     return list.slice(0, index).concat(list.slice(index + 1));
 }
 
-// Makes the next id, e.g. nextId("av", availabilitySlots) gives "av-6"
+
 function nextId(prefix, list) {
     let biggest = 0;
     for (let i = 0; i < list.length; i++) {
@@ -64,7 +39,7 @@ function nextId(prefix, list) {
     return prefix + "-" + (biggest + 1);
 }
 
-// The name of any user (made safe to show)
+
 function getUserName(userId) {
     let user = findRecord(users, userId);
     if (user === null) {
@@ -73,7 +48,7 @@ function getUserName(userId) {
     return escapeText(user.name);
 }
 
-// The logged-in driver's own profile object
+
 function getMyProfile() {
     for (const profile of driverProfiles) {
         if (profile.driverId === currentDriverId) {
@@ -83,7 +58,7 @@ function getMyProfile() {
     return null;
 }
 
-// The words the CUSTOMER sees for a request (shown to the driver too)
+
 function customerStatusText(request) {
     switch (request.status) {
         case "pending":
@@ -101,7 +76,7 @@ function customerStatusText(request) {
     }
 }
 
-// Returns "" when the driver may accept the request, otherwise the reason why not
+
 function offerBlockReason(request) {
     let user = findRecord(users, currentDriverId);
     let profile = getMyProfile();
@@ -113,7 +88,7 @@ function offerBlockReason(request) {
         return "Your profile is " + profile.verificationStatus + ". Only verified drivers can accept work.";
     }
 
-    // 1. Marked unavailable on these dates?
+
     for (const slot of availabilitySlots) {
         if (slot.driverId === currentDriverId && slot.type === "unavailable" &&
             datesOverlap(request.startDate, request.endDate, slot.startDate, slot.endDate)) {
@@ -121,7 +96,7 @@ function offerBlockReason(request) {
         }
     }
 
-    // 2. Already booked? (active contracts)
+
     for (const contract of contracts) {
         if (contract.driverId === currentDriverId && contract.status === "active" &&
             datesOverlap(request.startDate, request.endDate, contract.startDate, contract.endDate)) {
@@ -130,7 +105,7 @@ function offerBlockReason(request) {
         }
     }
 
-    // 3. Already accepted another request on these dates?
+
     for (const other of hiringRequests) {
         if (other.driverId === currentDriverId && other.status === "accepted" && other.id !== request.id &&
             datesOverlap(request.startDate, request.endDate, other.startDate, other.endDate)) {
@@ -152,11 +127,6 @@ function refreshAll() {
     renderAvailability();
 }
 
-
-/* =====================================================================
-   UNIQUE FEATURE 3: DASHBOARD SUMMARY
-   Every number is counted with a loop over the arrays.
-   ===================================================================== */
 function renderDashboard() {
     let profile = getMyProfile();
 
@@ -211,11 +181,7 @@ function renderDashboard() {
 }
 
 
-/* =====================================================================
-   UNIQUE FEATURE 1: MY DRIVER PROFILE (form validation)
-   ===================================================================== */
 
-// Puts the saved profile into the form fields
 function fillProfileForm() {
     let profile = getMyProfile();
     let user = findRecord(users, currentDriverId);
@@ -241,7 +207,7 @@ function renderProfileStatus() {
         "Verification status: " + badgeHtml(profile.verificationStatus) + " &nbsp; Document: " + documentText;
 }
 
-// The saved profile as a card: what customers and the admin see right now
+
 function renderProfileCard() {
     let profile = getMyProfile();
     let user = findRecord(users, currentDriverId);
@@ -269,7 +235,7 @@ function resetProfileForm() {
     hideMessage("profileMessage");
 }
 
-// onsubmit="return saveProfile()"
+
 function saveProfile() {
     let name = document.getElementById("name").value.trim();
     let phone = document.getElementById("phone").value.trim();
@@ -319,8 +285,7 @@ function saveProfile() {
         isValid = false;
     }
 
-    // The document is a fictional demo file: only its NAME is kept.
-    // The file name is the text after the last "\" and its type is the text after the last ".".
+
     let fileName = documentPath.slice(documentPath.lastIndexOf("\\") + 1);
     let extension = fileName.slice(fileName.lastIndexOf(".") + 1).toLowerCase();
 
@@ -337,7 +302,7 @@ function saveProfile() {
         return false;
     }
 
-    // Save the details in the arrays
+
     let profile = getMyProfile();
     let user = findRecord(users, currentDriverId);
 
@@ -351,7 +316,7 @@ function saveProfile() {
     profile.documentName = fileName;
     profile.verificationStatus = "pending";
 
-    // Same file type text that the other pages use
+
     let fileType = "image/jpeg";
     if (extension === "pdf") {
         fileType = "application/pdf";
@@ -359,7 +324,7 @@ function saveProfile() {
         fileType = "image/png";
     }
 
-    // One open submission per driver: update it, or add a new one for the Admin
+
     let submission = null;
     for (const item of verificationSubmissions) {
         if (item.subjectType === "driver" && item.subjectId === currentDriverId && item.status === "pending") {
@@ -375,7 +340,7 @@ function saveProfile() {
     }
     submission.filename = fileName;
     submission.fileType = fileType;
-    submission.fileSize = 0;          // the size is not read in this demo
+    submission.fileSize = 0;
 
     document.getElementById("document").value = "";
     refreshAll();
@@ -386,12 +351,7 @@ function saveProfile() {
 }
 
 
-/* =====================================================================
-   UNIQUE FEATURE 2: MY OFFERS
-   Customer requests (with search + filter), then the agency items.
-   ===================================================================== */
 
-// READ + SEARCH (only requests sent to this driver)
 function renderOffers() {
     let keyword = document.getElementById("offerSearch").value;
     let statusFilter = document.getElementById("offerFilter").value;
@@ -490,7 +450,6 @@ function declineOffer(index) {
 }
 
 
-/* ---------- Agency membership invitations ---------- */
 function renderInvitations() {
     let rows = "";
 
@@ -527,7 +486,7 @@ function answerInvitation(index, accept) {
         return;
     }
 
-    // A driver can be active in only one agency
+
     if (accept) {
         for (const other of memberships) {
             if (other.driverId === currentDriverId && other.status === "active") {
@@ -543,7 +502,7 @@ function answerInvitation(index, accept) {
 }
 
 
-/* ---------- Agency job proposals (bulk staffing) ---------- */
+
 function renderProposals() {
     let rows = "";
 
@@ -594,7 +553,7 @@ function answerProposal(index, accept) {
 }
 
 
-/* ---------- Replacement requests ---------- */
+
 function renderReplacementRequests() {
     let rows = "";
 
@@ -640,9 +599,9 @@ function answerReplacement(index, accept) {
     }
 
     if (accept) {
-        rep.driverAccepted = true;      // the customer's approval finishes it
+        rep.driverAccepted = true;
     } else {
-        rep.status = "rejected";        // the original contract stays as it is
+        rep.status = "rejected";
     }
     refreshAll();
     showMessage("inviteMessage", accept ? "Replacement accepted. It is completed when the customer approves." : "Replacement declined.",
@@ -650,11 +609,7 @@ function answerReplacement(index, accept) {
 }
 
 
-/* =====================================================================
-   MY AVAILABILITY: CREATE, READ, UPDATE, DELETE, SEARCH
-   ===================================================================== */
 
-// Returns an array with the driver's active contracts
 function getMyActiveContracts() {
     let myContracts = [];
     for (const contract of contracts) {
@@ -665,7 +620,7 @@ function getMyActiveContracts() {
     return myContracts;
 }
 
-// READ + SEARCH (only this driver's records)
+
 function renderAvailability() {
     let keyword = document.getElementById("availSearch").value;
     let typeFilter = document.getElementById("availFilter").value;
@@ -715,7 +670,7 @@ function renderAvailability() {
         rows = emptyRow(5, "No availability records match your search.");
     }
 
-    // The driver's confirmed jobs
+
     let jobRows = "";
     for (const contract of contracts) {
         if (contract.driverId === currentDriverId && (contract.status === "active" || contract.status === "completed")) {
@@ -741,7 +696,7 @@ function renderAvailability() {
 }
 
 
-// CREATE or UPDATE   (onsubmit="return saveSlot()")
+
 function saveSlot() {
     let type = document.getElementById("availability").value;
     let start = document.getElementById("startDate").value;
@@ -776,8 +731,7 @@ function saveSlot() {
         return false;
     }
 
-    // The new dates must not overlap another record of this driver
-    // (the record being edited is skipped: i !== editSlotIndex)
+
     for (let i = 0; i < availabilitySlots.length; i++) {
         let slot = availabilitySlots[i];
         if (slot.driverId === currentDriverId && i !== editSlotIndex &&
@@ -788,7 +742,7 @@ function saveSlot() {
         }
     }
 
-    // A driver cannot mark dates Unavailable when a confirmed job is on them
+
     if (type === "unavailable") {
         for (const job of getMyActiveContracts()) {
             if (datesOverlap(start, end, job.startDate, job.endDate)) {
@@ -800,7 +754,7 @@ function saveSlot() {
     }
 
     if (editSlotIndex === -1) {
-        // CREATE
+
         let newSlot = {
             id: nextId("av", availabilitySlots), driverId: currentDriverId, startDate: start,
             endDate: end, type: type, reason: reason
@@ -808,7 +762,7 @@ function saveSlot() {
         availabilitySlots.push(newSlot);
         showMessage("availMessage", "Availability record " + newSlot.id + " was added.", "success");
     } else {
-        // UPDATE
+
         let slot = availabilitySlots[editSlotIndex];
         slot.type = type;
         slot.startDate = start;
@@ -823,7 +777,6 @@ function saveSlot() {
 }
 
 
-// UPDATE step 1: copy the record into the form
 function editSlot(index) {
     let slot = availabilitySlots[index];
     editSlotIndex = index;
@@ -840,7 +793,7 @@ function editSlot(index) {
 }
 
 
-// DELETE
+
 function deleteSlot(index) {
     let slot = availabilitySlots[index];
     availabilitySlots = removeAt(availabilitySlots, index);
@@ -850,8 +803,6 @@ function deleteSlot(index) {
 }
 
 
-// Clears the form and goes back to "add" mode.
-// hideBox is true when the Reset button is pressed, false when a message must stay.
 function resetSlotForm(hideBox) {
     editSlotIndex = -1;
     document.getElementById("availForm").reset();
@@ -864,7 +815,7 @@ function resetSlotForm(hideBox) {
 }
 
 
-/* ---------- START ---------- */
+
 document.getElementById("welcomeName").innerHTML = "Welcome, " + getUserName(currentDriverId);
 fillProfileForm();
 refreshAll();
