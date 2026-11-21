@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Driver dashboard of DriverDen">
+
+    <title>Driver Dashboard | DriverDen</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+        <a href="index.html" class="logo">Driver<span>Den</span></a>
+
+        <div class="user-info">
+            <span class="badge driver">Driver</span>
+            <span id="welcomeName">Welcome</span>
+            <a href="index.html" class="btn-logout">Logout</a>
+        </div>
+    </header>
+
+    <!-- ============ NAVIGATION: each button shows one section ============ -->
+    <nav class="topnav" aria-label="Driver navigation">
+        <button type="button" id="nav-dashboardSection" onclick="showSection('dashboardSection')">Dashboard</button>
+        <button type="button" id="nav-profileSection" onclick="showSection('profileSection')">My Profile</button>
+        <button type="button" id="nav-offersSection" onclick="showSection('offersSection')">My Offers</button>
+        <button type="button" id="nav-availabilitySection" onclick="showSection('availabilitySection')">My
+            Availability</button>
+    </nav>
+
+    <p class="demo-label">Frontend demo - fictional data; changes are stored only in this browser.</p>
+
+    <main class="dashboard-container" id="main">
+
+        <!-- =========================================================
+             DASHBOARD
+             ========================================================= -->
+        <section id="dashboardSection" class="page-section">
+
+            <h2>Driver Dashboard</h2>
+
+            <p class="dashboard-subtitle">Your profile status, new offers and confirmed work at a glance.</p>
+
+            <p id="dashboardStatus"></p>
+
+            <div class="stats-grid">
+                <div class="stat-card" onclick="showSection('offersSection')">
+                    <span class="stat-number" id="statPendingOffers">0</span>
+                    <span class="stat-label">Customer requests waiting</span>
+                </div>
+                <div class="stat-card" onclick="showSection('offersSection')">
+                    <span class="stat-number" id="statAgencyItems">0</span>
+                    <span class="stat-label">Agency items waiting</span>
+                </div>
+                <div class="stat-card" onclick="showSection('availabilitySection')">
+                    <span class="stat-number" id="statActiveJobs">0</span>
+                    <span class="stat-label">Active contracts</span>
+                </div>
+                <div class="stat-card" onclick="showSection('availabilitySection')">
+                    <span class="stat-number" id="statUnavailable">0</span>
+                    <span class="stat-label">Unavailable periods</span>
+                </div>
+            </div>
+
+            <h3 class="dashboard-actions-title">Quick Actions</h3>
+
+            <div class="actions-grid">
+                <div class="action-card">
+                    <h3>Profile &amp; Verification</h3>
+                    <p>Keep your details up to date and submit a document so an admin can verify you.</p>
+                    <button type="button" class="btn" onclick="showSection('profileSection')">Edit Profile</button>
+                </div>
+                <div class="action-card">
+                    <h3>Offers</h3>
+                    <p>Accept or decline customer requests and agency invitations, jobs and replacements.</p>
+                    <button type="button" class="btn" onclick="showSection('offersSection')">View Offers</button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- =========================================================
+             D1: MY DRIVER PROFILE
+             ========================================================= -->
+        <section id="profileSection" class="page-section">
+
+            <h2>My Driver Profile</h2>
+
+            <p class="dashboard-subtitle">Enter your information and submit your profile for verification.</p>
+
+            <p id="profileStatus"></p>
+
+            <!-- Profile card: what customers see now (filled by renderProfileCard) -->
+            <div class="card profile-card" id="profileCard"></div>
+
+            <form id="profileForm" onsubmit="return saveProfile()">
+
+                <fieldset>
+                    <legend>Personal Details</legend>
+
+                    <table class="form-table">
+
+                        <tr>
+                            <td><label for="name">Full Name:</label></td>
+                            <td><input type="text" id="name" name="name">
+                                <span class="error" id="nameError"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="phone">Phone Number:</label></td>
+                            <td><input type="tel" id="phone" name="phone" placeholder="01XXXXXXXXX">
+                                <span class="error" id="phoneError"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="location">Current Location:</label></td>
+                            <td><input type="text" id="location" name="location">
+                                <span class="error" id="locationError"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="experience">Driving Experience (Years):</label></td>
+                            <td><input type="number" id="experience" name="experience" min="0" max="60">
+                                <span class="error" id="experienceError"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="salary">Expected Monthly Salary (BDT):</label></td>
+                            <td><input type="number" id="salary" name="salary" min="5000" max="200000">
+                                <span class="error" id="salaryError"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="vehicle">Vehicle Category:</label></td>
+                            <td>
+                                <select id="vehicle" name="vehicle">
+                                    <option value="">Select a category</option>
+                                    <option value="car">Car</option>
+                                    <option value="sedan">Sedan</option>
+                                    <option value="suv">SUV</option>
+                                    <option value="jeep">Jeep</option>
+                                    <option value="microbus">Microbus</option>
+                                    <option value="van">Van</option>
+                                    <option value="pickup">Pickup</option>
+                                    <option value="bus">Bus</option>
+                                    <option value="truck">Truck</option>
+                                    <option value="motorcycle">Motorcycle</option>
+                                </select>
+                                <span class="error" id="vehicleError"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="summary">Professional Summary:</label></td>
+                            <td>
+                                <textarea id="summary" name="summary" rows="4" cols="30"></textarea>
+                                <span class="error" id="summaryError"></span>
+                            </td>
+                        </tr>
+
+                    </table>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Verification Document</legend>
+
+                    <table class="form-table">
+                        <tr>
+                            <td><label for="document">Choose Document:</label></td>
+                            <td>
+                                <input type="file" id="document" name="document" accept=".pdf,.jpg,.jpeg,.png">
+                                <span class="error" id="documentError"></span>
+                                <span class="hint">PDF, JPG or PNG. Demo only: the file is NOT uploaded, only its name
+                                    is saved.</span>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <div id="profileMessage" class="message"></div>
+
+                <input type="submit" value="Submit for Verification">
+                <input type="button" value="Reset" onclick="resetProfileForm()">
+
+            </form>
+        </section>
+
+
+        <!-- =========================================================
+             D2: MY OFFERS (customer requests) + agency sections
+             ========================================================= -->
+        <section id="offersSection" class="page-section">
+
+            <h2>My Job Offers</h2>
+
+            <p class="dashboard-subtitle">Customer hiring requests sent to you. You accept or decline; the customer then
+                confirms.</p>
+
+            <h3>Customer Requests</h3>
+
+            <div class="search-bar">
+                <input type="text" id="offerSearch" placeholder="Search by job, customer or id..."
+                    onkeyup="renderOffers()">
+                <label for="offerFilter">Show:</label>
+                <select id="offerFilter" onchange="renderOffers()">
+                    <option value="all">All offers</option>
+                    <option value="pending">Pending</option>
+                    <option value="accepted">Accepted</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="declined">Declined</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <p id="offerCount" class="result-count"></p>
+            <div id="offerMessage" class="message"></div>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Job</th>
+                            <th>Customer</th>
+                            <th>Dates</th>
+                            <th>Amount</th>
+                            <th>Offer Status</th>
+                            <th>Customer-Visible Status</th>
+                            <th>Can You Accept?</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="offerBody"></tbody>
+                </table>
+            </div>
+
+            <h3 class="section-heading-left">Agency Membership Invitations</h3>
+
+            <div id="inviteMessage" class="message"></div>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Agency Name</th>
+                            <th>Area</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inviteBody"></tbody>
+                </table>
+            </div>
+
+            <h3 class="section-heading-left">Agency Job Proposals</h3>
+
+            <p class="hint">An agency proposed you for a customer's bulk request. After you accept, the customer
+                approves.</p>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Job</th>
+                            <th>Customer</th>
+                            <th>Dates</th>
+                            <th>Salary</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="proposalBody"></tbody>
+                </table>
+            </div>
+
+            <h3 class="section-heading-left">Replacement Requests</h3>
+
+            <p class="hint">An agency asks you to take over another driver's contract for its remaining dates.</p>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Replacing</th>
+                            <th>Customer</th>
+                            <th>Dates</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="replacementBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <!-- =========================================================
+             D3: MY AVAILABILITY
+             ========================================================= -->
+        <section id="availabilitySection" class="page-section">
+
+            <h2>My Availability</h2>
+
+            <p class="dashboard-subtitle">Manage your available and unavailable dates for driving jobs.</p>
+
+            <!-- Status summary: counts for this section (filled by renderAvailability) -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="statAvailablePeriods">0</span>
+                    <span class="stat-label">Available periods</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="statUnavailablePeriods">0</span>
+                    <span class="stat-label">Unavailable periods</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="statConfirmedJobs">0</span>
+                    <span class="stat-label">Confirmed jobs</span>
+                </div>
+            </div>
+
+            <form id="availForm" onsubmit="return saveSlot()">
+
+                <fieldset>
+                    <legend id="slotFormTitle">Add Availability</legend>
+
+                    <table class="form-table">
+
+                        <tr>
+                            <td><label for="availability">Availability Type:</label></td>
+                            <td>
+                                <select id="availability" name="availability">
+                                    <option value="">Select Type</option>
+                                    <option value="available">Available</option>
+                                    <option value="unavailable">Unavailable</option>
+                                </select>
+                                <span class="error" id="availabilityError"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="startDate">Start Date:</label></td>
+                            <td><input type="date" id="startDate" name="startDate">
+                                <span class="error" id="startDateError"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="endDate">End Date:</label></td>
+                            <td><input type="date" id="endDate" name="endDate">
+                                <span class="error" id="endDateError"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="reason">Reason (Optional):</label></td>
+                            <td>
+                                <textarea id="reason" name="reason" rows="3" cols="25"></textarea>
+                                <span class="error" id="reasonError"></span>
+                            </td>
+                        </tr>
+
+                    </table>
+                </fieldset>
+
+                <div id="availMessage" class="message"></div>
+
+                <input type="submit" id="slotSaveButton" value="Add Availability">
+                <input type="button" value="Reset" onclick="resetSlotForm()">
+
+            </form>
+
+            <h3 class="section-heading-left">My Availability Schedule</h3>
+
+            <div class="search-bar">
+                <input type="text" id="availSearch" placeholder="Search by reason, date or id..."
+                    onkeyup="renderAvailability()">
+                <label for="availFilter">Show:</label>
+                <select id="availFilter" onchange="renderAvailability()">
+                    <option value="all">All types</option>
+                    <option value="available">Available</option>
+                    <option value="unavailable">Unavailable</option>
+                </select>
+            </div>
+            <p id="slotCount" class="result-count"></p>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Reason</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="slotBody"></tbody>
+                </table>
+            </div>
+
+            <h3 class="section-heading-left">Confirmed Jobs</h3>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Contract</th>
+                            <th>Customer</th>
+                            <th>Dates</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jobBody"></tbody>
+                </table>
+            </div>
+
+            <p class="hint">Confirmed jobs cannot be deleted from the availability schedule.</p>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        &copy; 2026 DriverDen &middot; CSC 3215 Web Technologies
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/driver.js"></script>
+
+</body>
+
+</html>
