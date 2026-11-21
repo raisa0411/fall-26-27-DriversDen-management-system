@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agency Manager dashboard of DriverDen">
+    <title>Agency Manager Dashboard | DriverDen</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <a href="index.html" class="logo">Driver<span>Den</span></a>
+        <div class="user-info">
+            <span class="badge manager">Agency Manager</span>
+            <span id="welcomeName">Welcome</span>
+            <a href="index.html" class="btn-logout">Logout</a>
+        </div>
+    </header>
+
+    <!-- NAVIGATION: each button shows one section -->
+    <nav class="topnav" aria-label="Agency navigation">
+        <button type="button" id="nav-dashboardSection" onclick="showSection('dashboardSection')">Dashboard</button>
+        <button type="button" id="nav-rosterSection" onclick="showSection('rosterSection')">Driver Roster</button>
+        <button type="button" id="nav-requestsSection" onclick="showSection('requestsSection')">Staffing
+            Requests</button>
+        <button type="button" id="nav-replacementsSection"
+            onclick="showSection('replacementsSection')">Replacements</button>
+    </nav>
+
+    <main class="dashboard-container" id="main">
+
+        <!--DASHBOARD -->
+        <section id="dashboardSection" class="page-section">
+            <h2 class="page-title">Agency Dashboard</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card" onclick="showSection('rosterSection')">
+                    <div class="stat-number" id="statRoster">3</div>
+                    <div class="stat-label">Active drivers in roster</div>
+                </div>
+                <div class="stat-card" onclick="showSection('requestsSection')">
+                    <div class="stat-number" id="statRequests">1</div>
+                    <div class="stat-label">Open staffing requests</div>
+                </div>
+                <div class="stat-card" onclick="showSection('replacementsSection')">
+                    <div class="stat-number" id="statReplacements">1</div>
+                    <div class="stat-label">Pending replacements</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Agency profile and verification</h3>
+
+                <div id="agencyProfileDetails">
+                    <table class="facts-table">
+                        <tr>
+                            <td>Agency ID :</td>
+                            <td id="profileAgencyId">ag-1</td>
+                        </tr>
+                        <tr>
+                            <td>Agency Name :</td>
+                            <td id="profileAgencyName">Dhaka Fleet Partners</td>
+                        </tr>
+                        <tr>
+                            <td>Operating Area :</td>
+                            <td id="profileAgencyArea">Mirpur</td>
+                        </tr>
+                        <tr>
+                            <td>Manager Name :</td>
+                            <td id="profileManager">Shirin Akter </td>
+                        </tr>
+                        <tr>
+                            <td>Verification :</td>
+                            <td id="profileStatus"><span class="badge green">Approved</span></td>
+                        </tr>
+                        <tr>
+                            <td>Document :</td>
+                            <td id="profileDocument">Valid Document</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <p class="form-buttons">
+                    <button type="button" class="btn btn-small btn-secondary" id="toggleEditProfileBtn"
+                        onclick="toggleEditProfile()">Edit Profile</button>
+                </p>
+
+                <div id="profileEditMessage" class="message"></div>
+
+                <form id="editProfileForm" onsubmit="return saveAgencyProfile()" style="display: none;">
+                    <fieldset>
+                        <legend>Edit Agency Profile</legend>
+                        <table class="form-table">
+                            <tr>
+                                <td><label for="editAgencyName">Agency name:</label></td>
+                                <td>
+                                    <input type="text" id="editAgencyName" placeholder="Agency name">
+                                    <span class="error" id="editAgencyNameError"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="editAgencyArea">Operating area:</label></td>
+                                <td>
+                                    <input type="text" id="editAgencyArea" placeholder="e.g. Mirpur">
+                                    <span class="error" id="editAgencyAreaError"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                    <input type="submit" class="btn" value="Save Profile">
+                    <button type="button" class="btn btn-secondary" onclick="toggleEditProfile()">Cancel</button>
+                </form>
+
+                <hr>
+
+                <p id="verifyNote">Your agency is verified.</p>
+                <div id="verifyMessage" class="message"></div>
+
+                <form id="verifyForm" onsubmit="return submitVerification()" ;">
+                    <fieldset>
+                        <legend>Agency Verification Submission</legend>
+                        <table class="form-table">
+                            <tr>
+                                <td><label for="agencyNameInput">Agency name:</label></td>
+                                <td>
+                                    <input type="text" id="agencyNameInput" placeholder="Agency name">
+                                    <span class="error" id="agencyNameInputError"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="agencyAreaInput">Area:</label></td>
+                                <td>
+                                    <input type="text" id="agencyAreaInput" placeholder="e.g. Mirpur">
+                                    <span class="error" id="agencyAreaInputError"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="agencyDocument">Sample document:</label></td>
+                                <td>
+                                    <input type="file" id="agencyDocument" onchange="showFilePreview()">
+                                    <span class="error" id="agencyDocumentError"></span>
+                                    <span class="hint">PDF, JPG or PNG, max 2 MB. Demo only: the file is NOT uploaded,
+                                        only its name, type
+                                        and size are saved.</span>
+                                    <span class="hint" id="filePreview"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                    <input type="submit" class="btn" value="Submit for Verification">
+                </form>
+            </div>
+        </section>
+
+        <!-- G1: DRIVER ROSTER - Invite drivers, filter by membership status, remove members -->
+
+        <section id="rosterSection" class="page-section">
+            <h2 class="page-title">Driver Roster</h2>
+
+            <div id="rosterMessage" class="message"></div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h3>Invite a driver</h3>
+                        <form id="inviteForm" onsubmit="return submitInvite()">
+                            <fieldset>
+                                <legend>Invitation</legend>
+                                <table class="form-table">
+                                    <tr>
+                                        <td><label for="inviteDriver">Driver:</label></td>
+                                        <td>
+                                            <select id="inviteDriver">
+                                                <option value=""> Choose a driver </option>
+                                                <option value="u-drv8">Nayeem Khan</option>
+                                            </select>
+                                            <span class="error" id="inviteDriverError"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                            <input type="submit" id="inviteButton" class="btn" value="Send Invitation">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-wide">
+                    <div class="card">
+                        <h3>Members</h3>
+                        <div class="search-bar">
+                            <label for="rosterFilter">Show:</label>
+                            <select id="rosterFilter" onchange="renderRoster()">
+                                <option value="all">All</option>
+                                <option value="active">Active</option>
+                                <option value="invited">Invited</option>
+                                <option value="declined">Declined</option>
+                                <option value="removed">Removed</option>
+                            </select>
+                        </div>
+                        <p class="result-count" id="rosterCount"></p>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Driver</th>
+                                        <th>Area</th>
+                                        <th>Experience</th>
+                                        <th>Verification</th>
+                                        <th>Membership</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rosterBody">
+                                    <tr>
+                                        <td>Sohel Mia</td>
+                                        <td>Uttara</td>
+                                        <td>4 yrs</td>
+                                        <td><span class="badge green">Approved</span></td>
+                                        <td><span class="badge green">Active</span></td>
+                                        <td><button type="button" class="btn btn-small btn-danger">Remove</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--G2: BULK STAFFING-Propose eligible drivers; driver accepts, then customer approves.
+              Confirmed drivers can never go above the requested headcount. -->
+
+        <section id="requestsSection" class="page-section">
+            <h2 class="page-title">Staffing Requests</h2>
+
+
+            <div id="requestsMessage" class="message"></div>
+
+            <div id="requestList">
+                <div class="card request-card">
+                    <h3>Wedding season guest transport (2 cars) <span class="badge orange">Open</span></h3>
+                    <table class="facts-table">
+                        <tr>
+                            <td>Customer</td>
+                            <td>Farhan Ahmed</td>
+                        </tr>
+                        <tr>
+                            <td>Dates</td>
+                            <td>2026-12-10 to 2026-12-31</td>
+                        </tr>
+                        <tr>
+                            <td>Offered salary</td>
+                            <td>BDT 25,000/month</td>
+                        </tr>
+                        <tr>
+                            <td>Staffed</td>
+                            <td>0 / 2 confirmed</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- G3: REPLACEMENT PROPOSALS - The original contract stays active until the new driver accepts
+    AND the customer approves. -->
+        <section id="replacementsSection" class="page-section">
+            <h2 class="page-title">Replacement Proposals</h2>
+
+            <div id="replaceMessage" class="message"></div>
+
+            <div class="card">
+                <h3>Propose a replacement</h3>
+                <form id="replaceForm" onsubmit="return submitReplacement()">
+                    <fieldset>
+                        <legend>Replacement Details</legend>
+                        <table class="form-table">
+                            <tr>
+                                <td><label for="replaceContract">Active contract:</label></td>
+                                <td>
+                                    <select id="replaceContract" onchange="fillReplacementDrivers()">
+                                        <option value=""> Choose an active contract </option>
+                                    </select>
+                                    <span class="error" id="replaceContractError"></span>
+                                    <span class="hint" id="remainingDates"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="replaceDriver">Replacement driver:</label></td>
+                                <td>
+                                    <select id="replaceDriver" disabled>
+                                        <option value=""> Choose a contract first </option>
+                                    </select>
+                                    <span class="error" id="replaceDriverError"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="replaceReason">Reason:</label></td>
+                                <td>
+                                    <textarea id="replaceReason" rows="3" maxlength="300"
+                                        placeholder="Why is the driver being replaced?"></textarea>
+                                    <span class="error" id="replaceReasonError"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                    <input type="submit" id="replaceButton" class="btn" value="Propose Replacement">
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Proposals</h3>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Original driver</th>
+                                <th>Replacement</th>
+                                <th>Reason</th>
+                                <th>Driver consent</th>
+                                <th>Customer approval</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="replaceBody">
+                            <tr>
+                                <td>Jamal Uddin <span class="badge green">Active</span></td>
+                                <td>Mizan Rahman</td>
+                                <td>Original driver requested leave for a family event.</td>
+                                <td>Accepted</td>
+                                <td>Waiting</td>
+                                <td><span class="badge orange">Pending</span></td>
+                                <td><button type="button" class="btn btn-small btn-secondary">Cancel</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        &copy; 2026 DriverDen &middot; CSC 3215 Web Technologies
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/agency.js"></script>
+</body>
+
+</html>
