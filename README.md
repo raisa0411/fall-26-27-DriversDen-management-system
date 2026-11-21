@@ -1,3 +1,5 @@
+![Driver দেন — an animated driver profile shows experience, a service rate, and a hiring request.](./driverden-banner.gif)
+
 # DriverDen — Driver Hiring & Management System
 
 A web platform connecting car owners, businesses, and private individuals with licensed, verified drivers for flexible hiring contracts.
@@ -248,7 +250,6 @@ For major changes, open an issue first to discuss the scope and approach.
 ## License
 
 A project license has not yet been specified in this README. Add the selected license and a corresponding `LICENSE` file before distributing the project under explicit license terms.
-![Driver দেন — an animated driver profile shows experience, a service rate, and a hiring request.](./driverden-banner.gif)
 
 # Driver দেন
 ### Driver Hiring Management System
