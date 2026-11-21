@@ -1,1 +1,353 @@
-<h1>DriverDen Management System</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="DriverDen: hire verified drivers in Dhaka by the hour, day, outstation trip, or monthly contract">
+
+    <title>Home | DriverDen</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+        <a href="index.html" class="logo">Driver<span>Den</span></a>
+
+        <div class="user-info">
+            <a href="login.html" class="btn btn-small btn-light">Login</a>
+            <a href="register.html" class="btn btn-small">Register</a>
+        </div>
+    </header>
+
+    <!-- The same navigation bar on every public page.
+         Login and Register are buttons in the header,
+         so they are not repeated here. -->
+    <nav class="topnav">
+        <a href="index.html" class="active">Home</a>
+        <a href="#services">Services</a>
+        <a href="#who">Who It's For</a>
+        <a href="#how">How It Works</a>
+        <a href="#contact">Contact Us</a>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <div class="hero">
+        <h1>Find a trusted driver</h1>
+
+        <p>
+            Hire verified drivers in Dhaka by the hour, for a full day, for an outstation trip, or on a recurring monthly contract.
+        </p>
+
+        <p class="hero-note">
+            Create an account to search drivers, compare services, and send hiring requests. <a href="#who" class="hero-link">See who it's for &darr;</a>
+        </p>
+    </div>
+
+    <main class="container">
+
+        <!-- ============ SERVICES ============ -->
+        <section id="services" class="home-section">
+            <div class="section-heading">
+                <h2>Our services</h2>
+
+                <p>
+                    Every driver lists their own services and rates, so you always know what is included before you hire.
+                </p>
+            </div>
+
+            <div class="feature-strip">
+                <div class="feature">
+                    <pre class="feature-art" aria-hidden="true">⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣶⣦⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠠⣾⣿⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣤⣤⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⠋⠁⠀⠀⠈⠹⣿⣿⣿⣿⣿⡿⠋⠀⠀⠈⠻⣿⣿⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⣿⣿⣿⠃⠀⠀⠀⣴⣶⡄⢹⣿⣿⣿⣿⠃⢰⣶⡄⠀⠀⣿⣿⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⣿⣿⣿⡆⠀⠀⠀⠹⠿⠁⣸⣿⣿⣿⣿⡀⠘⡿⠃⠀⢀⣿⣿⣿⡆⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣿⣿⣯⣹⣿⣷⣤⣾⣿⣿⣿⣿⣿⣿⣃⣀⣀⣀⣀⠀
+⠀⠾⠿⠟⠛⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠋⠉⠉⠋⠀
+⠠⣤⣤⣶⡶⠿⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠛⠛⠛⠷⣶⡄
+⠀⠀⠉⢀⣠⣶⠾⠟⠉⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠛⠛⠳⢶⣦⣄⡀⠀⠀
+⠀⠀⠀⠟⠋⠁⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠁⠀⠀⠀⠀⠀⠀⠀⠉⠁⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀</pre>
+
+                    <h3>Verified drivers</h3>
+
+                    <p>
+                        Admins check each driver's documents before the driver becomes available to customers.
+                    </p>
+                </div>
+
+                <div class="feature">
+                    <pre class="feature-art" aria-hidden="true">⠀⠀⠀⠀⢠⡶⠚⢷⣤⡀⠀⠀⠀⠀⠀⣲⡶⠛⠻⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢠⡿⠁⠀⠀⠙⣷⣄⠀⢀⣴⡟⠁⠀⠀⢷⢹⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣾⠃⠀⠠⠶⠚⠛⠛⠛⠛⠋⠀⠀⣀⡀⢸⠈⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢸⣏⡔⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠚⠉⠉⣿⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢠⣿⢠⣶⡆⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀
+⢒⡾⠁⠘⠟⠁⠀⠀⠀⠀⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀
+⠉⣧⠀⠀⠀⠀⠃⠀⠀⠀⠈⠉⠠⣍⠀⠀⠀⠀⠀⠀⣸⡇⢀⣤⠶⠛⠛⠻⢦⣄
+⠀⠸⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡟⣴⠟⠁⠀⠀⠀⠀⠀⢻
+⠀⠀⠀⠛⣷⡦⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⡴⠞⠋⢠⡟⠀⠀⠀⠀⠀⠀⢀⡾
+⠀⠀⠀⢰⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠳⣤⡀⢸⠃⠀⠀⠀⠀⢠⡶⠟⠁
+⠀⠀⠀⣸⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢷⣹⡄⠀⠀⠀⠀⣼⠀⠀⠀
+⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠈⢿⣇⠀⠀⠀⠀⢹⡄⠀⠀
+⠀⠀⠀⢸⡀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⡄⠀⠀⠀⠈⣧⠀⠀
+⠀⠀⠀⢸⡇⠘⡇⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⢹⡇⠀
+⠀⠀⠀⢸⡇⠀⠙⠀⠀⠀⠀⠀⢠⠞⠁⠀⠀⠀⠀⠀⠀⠀⣿⠇⠀⠀⠀⢸⡇⠀
+⠀⠀⠀⢸⡇⠀⢸⡆⠀⠀⠀⠀⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠀⠀⠀⠀⣸⠇⠀
+⠀⠀⠀⢸⣿⠀⠀⡇⠀⠀⠀⠀⣿⡀⠀⠀⠀⠀⠀⠀⠀⢀⡇⠀⠀⢀⣴⡟⠁⠀
+⠀⠀⠀⠘⠿⠶⢶⢧⣦⣦⡴⢾⣥⣽⣤⣤⣤⣤⣤⣤⡴⣯⡤⠴⠶⠛⠋⠀⠀⠀</pre>
+
+                    <h3>Hourly &amp; daily hire</h3>
+
+                    <p>
+                        Book a driver on demand, part-time, or for a single trip inside the city.
+                    </p>
+                </div>
+
+                <div class="feature">
+                    <pre class="feature-art" aria-hidden="true">⠀⠀⠀⠀⢀⠠⠤⠀⢀⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠐⠀⠐⠀⠀⢀⣾⣿⡇⠀⠀⠀⠀⠀⢀⣼⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⠀⠀⠀⠀⣴⣿⣿⠇⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣇⠀⠀⢀⣾⣿⣿⣿⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠐⠀⡀
+⠀⠀⠀⠀⢰⡿⠉⠀⡜⣿⣿⣿⡿⠿⢿⣿⣿⡃⠀⠀⠂⠄⠀
+⠀⠀⠒⠒⠸⣿⣄⡘⣃⣿⣿⡟⢰⠃⠀⢹⣿⡇⠀⠀⠀⠀⠀
+⠀⠀⠚⠉⠀⠊⠻⣿⣿⣿⣿⣿⣮⣤⣤⣿⡟⠁⠘⠠⠁⠀⠀
+⠀⠀⠀⠀⠀⠠⠀⠀⠈⠙⠛⠛⠛⠛⠛⠁⠀⠒⠤⠀⠀⠀⠀
+⠨⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑⠀⠀⠀⠀⠀⠀
+⠁⠃⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</pre>
+
+                    <h3>Outstation &amp; tours</h3>
+
+                    <p>
+                        Plan interdistrict trips, same-day returns, and multi-day tours with a fixed daily rate.
+                    </p>
+                </div>
+
+                <div class="feature">
+                    <pre class="feature-art" aria-hidden="true">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠇⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡐⠅⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡐⠀⠈⣆⡤⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠋⠁⠉⡝⡄⠀⠀⠀
+⠀⡖⡀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀
+⠀⠑⡇⠀⠀⠀⠀⠀⡏⢷⡀⠀⠀⠀⠀⠀⠀⡀⣀⢀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣶⣟⠀⠀⠀⠀⠀⠀⠀
+⢀⣘⡈⢒⠖⠂⠀⠀⡇⠀⠙⢗⢄⣤⣔⡏⠟⠯⠙⠙⠋⠛⠙⢷⣤⣀⡴⠕⠁⢸⡕⠀⠀⠀⠀⠀⠀⠀
+⠋⠀⢱⠁⠀⠀⠀⠀⡇⠀⠀⠈⠻⡍⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠛⠁⠀⠀⣸⠅⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣠⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡷⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⡏⠀⠀⠀⠀⢠⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⣇⠀⠀⠀⠀⠊⢗⡇⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢸⠁⠀⠀⠀⠀⣾⠅⠀⠀⠀⠀⢠⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠸⡇⠀⠀⠀⠀⠀⠀
+⠀⠀⠈⠐⠒⠒⠺⠗⠒⠀⠀⠀⠈⠁⠀⣀⠀⠀⣺⠀⠀⢀⠀⠻⠇⠀⠀⠀⠉⠁⢙⠏⠈⠈⠁⠉⠁⠀
+⠀⠀⠀⠀⡄⠄⠼⡇⡊⠈⠀⠀⠀⠀⠀⢾⣄⣠⡟⣇⣀⡼⠀⠀⠀⠀⠀⠀⠂⠲⠗⡇⠐⠐⠄⡀⠀⠀
+⠀⠀⠀⠠⡀⡀⠄⠵⡆⡂⠂⠀⠀⠀⠀⠀⠉⠉⠀⠉⠛⠁⠀⠀⠀⠀⠀⢀⡗⣛⠒⠅⣀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⡶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣷⣿⡁⠀⠀⠀⠉⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⣃⠇⠡⠀⠀⠀⢀⠄⡒⠄
+⠀⠀⠀⣨⠀⠀⠀⠀⠀⢸⡯⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠞⠅⠂⠀⣠⠒⠩⠙⡷
+⠀⠀⠀⠷⡀⠀⠀⠀⠀⢐⣋⠀⠀⠀⢠⡇⠀⠀⠀⠀⡄⠀⠀⠀⢀⢀⠀⠀⠀⠀⡑⡁⠰⠁⠠⠁⡀⢏
+⠀⢀⠞⡍⢹⡲⠒⠀⠀⠸⢍⠀⠀⠀⢸⠂⠀⠀⠀⠀⣇⠀⠀⠀⢟⡅⠀⠀⠀⠀⢘⣨⠁⠌⠀⣀⠘⠂
+⠀⠀⠀⢱⠇⠃⠀⠀⠀⠐⡇⡄⠀⠀⢈⠆⠀⠀⠀⠀⢆⠀⠀⠀⢇⠆⠀⠀⠀⠀⣨⡏⠌⠀⡠⢀⠁⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⡣⡆⠀⠀⢀⠆⠀⠀⠀⠀⡅⠀⠀⢀⡒⠄⠀⠀⠀⠀⡜⣯⠀⠄⠒⠂⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠊⢘⠄⠀⢈⠄⠀⠀⠀⠀⡈⠀⠀⠠⠬⠀⠀⠀⠀⠀⡷⢥⢦⠟⠁⠀⠀⠀</pre>
+
+                    <h3>Monthly contracts</h3>
+
+                    <p>
+                        Hire full-time drivers or office and school pick-and-drop services every month.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ WHO IT'S FOR ============ -->
+        <section id="who" class="home-section">
+            <div class="section-heading">
+                <h2>Who is DriverDen for?</h2>
+
+                <p>
+                    Choose your type when you register. Everyone logs in from the same page.
+                </p>
+            </div>
+
+            <div class="role-grid">
+                <div class="role-card customer">
+                    <span class="badge customer">Customer</span>
+
+                    <h3>Customers</h3>
+
+                    <ul>
+                        <li>Search and compare drivers</li>
+                        <li>Send hiring requests</li>
+                        <li>Track request statuses</li>
+                        <li>Review completed hires</li>
+                    </ul>
+
+                    <a href="register.html" class="btn">Register as Customer</a>
+                </div>
+
+                <div class="role-card driver">
+                    <span class="badge driver">Driver</span>
+
+                    <h3>Drivers</h3>
+
+                    <ul>
+                        <li>Manage profile and documents</li>
+                        <li>Respond to hiring offers</li>
+                        <li>Set availability</li>
+                        <li>List services and rates</li>
+                    </ul>
+
+                    <a href="register.html" class="btn">Register as Driver</a>
+                </div>
+
+                <div class="role-card manager">
+                    <span class="badge manager">Agency Manager</span>
+
+                    <h3>Agency Managers</h3>
+
+                    <ul>
+                        <li>Manage driver rosters</li>
+                        <li>Handle bulk staffing</li>
+                        <li>Arrange replacements</li>
+                        <li>Assign jobs to drivers</li>
+                    </ul>
+
+                    <a href="register.html" class="btn">Register as Agency Manager</a>
+                </div>
+
+                <div class="role-card admin">
+                    <span class="badge admin">Admin</span>
+
+                    <h3>Administrators</h3>
+
+                    <ul>
+                        <li>Verify driver documents</li>
+                        <li>Handle complaints</li>
+                        <li>Moderate accounts</li>
+                        <li>Moderate reviews</li>
+                    </ul>
+
+                    <a href="login.html" class="btn">Admin Login</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ HOW IT WORKS ============ -->
+        <section id="how" class="home-section">
+            <div class="section-heading">
+                <h2>How it works</h2>
+
+                <p>Three simple steps.</p>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+
+                    <h3>Register</h3>
+
+                    <p>
+                        Open <a href="register.html">Register</a>, choose Customer, Driver, or Agency Manager, and fill in the details your type needs.
+                    </p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+
+                    <h3>Log in</h3>
+
+                    <p>
+                        Use the <a href="login.html">single login page</a>. DriverDen opens your own dashboard automatically. Drivers log in after an admin verifies them.
+                    </p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+
+                    <h3>Hire or work</h3>
+
+                    <p>
+                        Compare services and send hiring requests, or manage your driver profile and availability, depending on your account.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ CONTACT ============ -->
+        <section id="contact" class="home-section">
+            <div class="card">
+                <h3>Contact Us</h3>
+
+                <p>
+                    <strong>DriverDen Head Office</strong><br> Dhaka, Bangladesh
+                </p>
+
+                <table class="contact-table">
+                    <tr>
+                        <td>Address:</td>
+                        <td>
+                            House 42, Road 11, Dhanmondi, Dhaka 1205, Bangladesh
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Phone:</td>
+                        <td>+880 2 9000 0000</td>
+                    </tr>
+
+                    <tr>
+                        <td>Email:</td>
+                        <td><a href="mailto:support@driverden.com">support@driverden.com</a></td>
+                    </tr>
+
+                    <tr>
+                        <td>Website:</td>
+                        <td><a href="https://www.driverden.com" target="_blank">www.driverden.com</a></td>
+                    </tr>
+                </table>
+
+                <p class="hint">
+                    DriverDen is a university course project for CSC 3215 Web Technologies. The contact details above are fictional demo data.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============ CALL TO ACTION ============ -->
+        <section class="home-section">
+            <div class="cta-band">
+                <h2>Ready to find your driver?</h2>
+
+                <p>It takes less than two minutes to create an account.</p>
+
+                <a href="register.html" class="btn btn-light">Create an account</a>
+                <a href="login.html" class="btn btn-secondary">I already have one</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+        &copy; 2026 DriverDen &middot; CSC 3215 Web Technologies
+    </footer>
+
+</body>
+
+</html>
