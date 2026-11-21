@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Create a DriverDen account as a customer, driver, or transport agency">
+
+    <title>Register | DriverDen</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+        <a href="index.html" class="logo">Driver<span>Den</span></a>
+
+        <div class="user-info">
+            <a href="index.html" class="btn btn-small btn-light">Back to Home</a>
+        </div>
+    </header>
+
+    <!-- The same navigation bar on every public page. -->
+    <nav class="topnav" aria-label="Public navigation">
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="register.html" class="active" aria-current="page">Register</a>
+    </nav>
+
+    <main class="container">
+        <div class="auth-box">
+
+            <div class="card">
+                <h2>Create an account</h2>
+
+                <p class="page-subtitle">
+                    Choose your type when you register. Everyone logs in from the same page.
+                </p>
+
+                <div id="signupMessage" class="message"></div>
+
+                <!--
+                    onsubmit="return validateSignup()"
+                    return false -> the form is NOT sent, the user stays here
+                    return true  -> the browser opens the page in "action".
+                    After a valid registration the demo opens the login page.
+                -->
+                <form id="signupForm" action="login.html" method="get" onsubmit="return validateSignup()">
+
+                    <fieldset>
+                        <legend>Your details</legend>
+
+                        <div class="form-group">
+                            <label for="role">Register As</label>
+
+                            <select id="role" required>
+                                <option value="customer">Customer (Individual / Business)</option>
+                                <option value="driver">Professional Driver</option>
+                                <option value="agency">Transport Agency</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+
+                            <input type="text" id="fullName" name="fullName" placeholder="e.g. Sabiha Jahan" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+
+                            <input type="email" id="email" name="email" placeholder="sabiha@driverden.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+
+                            <input type="tel" id="phone" name="phone" placeholder="+880 1700-000000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+
+                            <input type="password" id="password" placeholder="At least 6 characters" required>
+                        </div>
+                    </fieldset>
+
+                    <button type="submit" class="btn btn-block">
+                        Complete Registration
+                    </button>
+                </form>
+
+                <p class="auth-switch">
+                    Already registered? <a href="login.html">Sign in here</a>
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>What happens next?</h3>
+
+                <p class="hint">
+                    Customers can log in and start hiring right away.
+                </p>
+
+                <p class="hint">
+                    Drivers can log in only after an admin verifies their documents. Until then, the account stays pending.
+                </p>
+
+                <p class="hint">
+                    Agency managers handle rosters, bulk staffing and replacements for their drivers.
+                </p>
+
+                <p class="hint">
+                    This is a frontend demo: registration is validated in the browser and no real account is created.
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+        &copy; 2026 DriverDen &middot; CSC 3215 Web Technologies
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/login.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Customer dashboard of DriverDen">
+
+    <title>Customer Dashboard | DriverDen</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header class="header">
+        <a href="index.html" class="logo">Driver<span>Den</span></a>
+
+        <div class="user-info">
+            <span class="badge customer">Customer</span>
+            <span id="welcomeName">Welcome</span>
+            <a href="index.html" class="btn-logout">Logout</a>
+        </div>
+    </header>
+
+    <!-- ============ NAVIGATION: each button shows one section ============ -->
+    <nav class="topnav" aria-label="Customer navigation">
+        <button type="button" id="nav-dashboardSection" onclick="showSection('dashboardSection')">Dashboard</button>
+        <button type="button" id="nav-driversSection" onclick="showSection('driversSection')">Find Drivers</button>
+        <button type="button" id="nav-compareSection" onclick="showSection('compareSection')">Compare Drivers</button>
+        <button type="button" id="nav-hireSection" onclick="showSection('hireSection')">Hire a Driver</button>
+        <button type="button" id="nav-requestsSection" onclick="showSection('requestsSection')">My Requests</button>
+        <button type="button" id="nav-reviewsSection" onclick="showSection('reviewsSection')">My Reviews</button>
+    </nav>
+
+    <p class="demo-label">Frontend demo - fictional data; changes are stored only in this browser.</p>
+
+    <main class="dashboard-container" id="main">
+
+        <!-- =========================================================
+             DASHBOARD
+             ========================================================= -->
+        <section id="dashboardSection" class="page-section">
+
+            <h2>Customer Dashboard</h2>
+
+            <p class="dashboard-subtitle">
+                Welcome back! Here is an overview of drivers, hiring requests, and your reviews.
+            </p>
+
+            <div class="stats-grid">
+
+                <div class="stat-card" onclick="showSection('driversSection')">
+                    <span class="stat-number" id="statTotalDrivers">0</span>
+                    <span class="stat-label">Listed Drivers</span>
+                </div>
+
+                <div class="stat-card" onclick="showSection('requestsSection')">
+                    <span class="stat-number" id="statTotalRequests">0</span>
+                    <span class="stat-label">Total Requests</span>
+                </div>
+
+                <div class="stat-card" onclick="showSection('requestsSection')">
+                    <span class="stat-number" id="statPendingRequests">0</span>
+                    <span class="stat-label">Pending Requests</span>
+                </div>
+
+                <div class="stat-card" onclick="showSection('reviewsSection')">
+                    <span class="stat-number" id="statTotalReviews">0</span>
+                    <span class="stat-label">Reviews Given</span>
+                </div>
+
+            </div>
+
+            <h3 class="dashboard-actions-title">Quick Actions</h3>
+
+            <div class="actions-grid">
+
+                <div class="action-card">
+                    <h3>Find &amp; Compare Drivers</h3>
+                    <p>
+                        Search drivers by location, job type, rate, or experience, or compare two candidates side-by-side.
+                    </p>
+                    <button type="button" class="btn" onclick="showSection('driversSection')">Browse Drivers</button>
+                    <button type="button" class="btn" onclick="showSection('compareSection')">Compare</button>
+                </div>
+
+                <div class="action-card">
+                    <h3>Hiring &amp; Contracts</h3>
+                    <p>
+                        Send a new hiring request, ask an agency for several drivers, or view and manage your requests.
+                    </p>
+                    <button type="button" class="btn" onclick="showSection('hireSection')">Hire Driver</button>
+                    <button type="button" class="btn" onclick="showSection('requestsSection')">My Requests</button>
+                </div>
+
+                <div class="action-card">
+                    <h3>Driver Performance Reviews</h3>
+                    <p>
+                        Share feedback about your experience and view driver reviews.
+                    </p>
+                    <button type="button" class="btn" onclick="showSection('reviewsSection')">Leave a Review</button>
+                </div>
+
+                <div class="action-card">
+                    <h3>Hiring Tip &amp; Safety</h3>
+                    <p>
+                        Only verified drivers are listed. Compare the selected service's rate, billing unit, and included hours before hiring.
+                    </p>
+                    <span class="hiring-tip-label">Check the service details before hiring</span>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =========================================================
+             C1: FIND DRIVERS (search and filter)
+             ========================================================= -->
+        <section id="driversSection" class="page-section find-drivers-page">
+
+            <div class="drivers-intro">
+                <h2>Find Your Driver</h2>
+                <p>
+                    Browse verified drivers, compare service rates, and choose the right fit.
+                </p>
+            </div>
+
+            <form class="filter-card" onsubmit="return searchDrivers()">
+
+                <div class="filter-group">
+                    <label for="filterJobType">Job Type</label>
+
+                    <select id="filterJobType" onchange="updateRateFilter()">
+                        <option value="">Any Job Type</option>
+                        <option value="FullTimeMonthly">Full-time (Monthly Contract)</option>
+                        <option value="PartTimeDaily">Part-time (Up to 4 Hours)</option>
+                        <option value="InsideCityTrip">Single Trip (Inside City)</option>
+                        <option value="IntercityHighway">Interdistrict / Highway Trip</option>
+                        <option value="RoundTrip">Round Trip (Same-day Return)</option>
+                        <option value="NightShift">Night Shift</option>
+                        <option value="WeekendOnly">Weekend / Holiday</option>
+                        <option value="OnDemandHourly">On-Demand / Hourly</option>
+                        <option value="OfficeSchoolRoutine">Office / School Pick &amp; Drop</option>
+                        <option value="EmergencyRelief">Emergency / Backup Replacement</option>
+                        <option value="OutstationTour">Outstation / Multi-day Tour</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterLocation">Location</label>
+
+                    <select id="filterLocation">
+                        <option value="">All Locations</option>
+                        <option value="Dhanmondi">Dhanmondi</option>
+                        <option value="Gulshan">Gulshan</option>
+                        <option value="Banani">Banani</option>
+                        <option value="Uttara">Uttara</option>
+                        <option value="Mirpur">Mirpur</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterExperience">Min Experience (Years)</label>
+
+                    <input type="number" id="filterExperience" placeholder="Years" min="0" step="1">
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterMaxSalary" id="rateFilterLabel">Maximum Rate (BDT)</label>
+
+                    <input type="number" id="filterMaxSalary" placeholder="Enter amount" min="0" aria-describedby="rateFilterHelp" disabled>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="btn-filter" id="btnApplyFilter">Search</button>
+                    <button type="button" class="btn-reset" id="btnResetFilter" onclick="clearDriverFilters()">Clear</button>
+                </div>
+
+                <p class="filter-help" id="rateFilterHelp">
+                    Choose a job type to filter by its rate. Experience is entered in years.
+                </p>
+
+            </form>
+
+            <div class="drivers-results-heading">
+                <h3>Available Drivers</h3>
+                <p id="driverCount" role="status" aria-live="polite"></p>
+            </div>
+
+            <div id="driversList" class="drivers-grid"></div>
+
+            <div class="drivers-footer">
+                <p>
+                    Rates cover the driver's service only. Vehicle, fuel, tolls, parking, meals, and accommodation are excluded.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- =========================================================
+             C1: COMPARE DRIVERS
+             ========================================================= -->
+        <section id="compareSection" class="page-section compare-drivers-page">
+
+            <h2>Compare Drivers</h2>
+
+            <p class="dashboard-subtitle">
+                Choose two drivers and a service to compare their rates, experience, and details.
+            </p>
+
+            <form onsubmit="return compareTwoDrivers()">
+                <fieldset>
+                    <legend>Your Comparison</legend>
+
+                    <div class="comparison-controls">
+
+                        <div class="comparison-field">
+                            <label for="driver1Select">First Driver</label>
+                            <select id="driver1Select"></select>
+                        </div>
+
+                        <div class="comparison-field">
+                            <label for="driver2Select">Second Driver</label>
+                            <select id="driver2Select"></select>
+                        </div>
+
+                        <div class="comparison-field">
+                            <label for="compareJobType">Service</label>
+                            <select id="compareJobType"></select>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="compare-button">Compare Drivers</button>
+                </fieldset>
+            </form>
+
+            <p id="compareResult" role="status" aria-live="polite">
+                Select two different drivers and a service to begin.
+            </p>
+
+            <div id="comparisonContainer" class="table-wrapper"></div>
+        </section>
+
+
+        <!-- =========================================================
+             C2: HIRE A DRIVER (direct request) + REQUEST STAFF FROM AN AGENCY
+             ========================================================= -->
+        <section id="hireSection" class="page-section hire-driver-page">
+
+            <h2>Hire a Driver</h2>
+
+            <p class="dashboard-subtitle">
+                Choose a driver and service, review the booking details, then submit your hiring request.
+            </p>
+
+            <form id="hiringForm" onsubmit="return submitHiringRequest()">
+
+                <fieldset>
+                    <legend>Booking Details</legend>
+
+                    <div class="hiring-fields">
+
+                        <div class="hiring-field hiring-field-wide">
+                            <label for="driver">Driver</label>
+
+                            <select id="driver" name="driver" onchange="updateHiringServices()" required>
+                                <option value="">-- Select Driver --</option>
+                            </select>
+                        </div>
+
+                        <div class="hiring-field hiring-field-wide">
+                            <label for="hireService">Service</label>
+
+                            <select id="hireService" name="service" onchange="updateHiringServiceDetails()" required disabled>
+                                <option value="">-- Select a Driver First --</option>
+                            </select>
+                        </div>
+
+                        <div class="hiring-field">
+                            <label for="hiredate">Start Date</label>
+
+                            <input type="date" id="hiredate" name="startDate" onchange="updateHiringAmount()" required>
+                        </div>
+
+                        <div class="hiring-field">
+                            <label for="hireQuantity" id="hireQuantityLabel">Booking Quantity</label>
+
+                            <input type="number" id="hireQuantity" name="quantity" min="1" step="1" oninput="updateHiringAmount()" aria-describedby="hireMinimum" required disabled>
+                        </div>
+
+                    </div>
+
+                    <div class="hiring-summary">
+                        <h3>Service Summary</h3>
+
+                        <dl>
+                            <div>
+                                <dt>Rate</dt>
+                                <dd id="hireRate">Select a service.</dd>
+                            </div>
+
+                            <div>
+                                <dt>Included Scope</dt>
+                                <dd id="hireScope">Select a service.</dd>
+                            </div>
+
+                            <div>
+                                <dt>Minimum Booking</dt>
+                                <dd id="hireMinimum">Select a service.</dd>
+                            </div>
+
+                            <div>
+                                <dt>Booking Dates</dt>
+                                <dd id="hireDates">Choose a start date.</dd>
+                            </div>
+
+                            <div class="hiring-total">
+                                <dt>Estimated Base Amount</dt>
+                                <dd id="hireAmount" aria-live="polite">&mdash;</dd>
+                            </div>
+                        </dl>
+
+                        <p class="hiring-note">
+                            The base amount is the listed rate multiplied by your booking quantity. Any additional charges or changes to the included scope must be agreed before hiring.
+                        </p>
+                    </div>
+
+                    <button type="submit" id="hireSubmit" class="hire-submit" disabled>Submit Hiring Request</button>
+
+                </fieldset>
+            </form>
+
+            <p id="hireMessage" role="status" aria-live="polite">
+                This is a frontend demo. Saved requests appear in My Requests.
+            </p>
+
+            <!-- Request several drivers from an agency (feeds the Agency Manager page) -->
+            <form id="bulkForm" onsubmit="return submitBulkRequest()">
+                <fieldset>
+                    <legend>Request Drivers from an Agency</legend>
+
+                    <div id="bulkMessage" class="message"></div>
+
+                    <table class="form-table">
+                        <tr>
+                            <td><label for="bulkAgency">Agency:</label></td>
+                            <td>
+                                <select id="bulkAgency">
+                                    <option value="">-- Select Agency --</option>
+                                </select>
+                                <span class="error" id="bulkAgencyError"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="bulkHeadcount">Number of drivers:</label></td>
+                            <td>
+                                <input type="number" id="bulkHeadcount" min="1" max="20" step="1" placeholder="e.g. 2">
+                                <span class="error" id="bulkHeadcountError"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="bulkStart">Start date:</label></td>
+                            <td>
+                                <input type="date" id="bulkStart">
+                                <span class="error" id="bulkStartError"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="bulkEnd">End date:</label></td>
+                            <td>
+                                <input type="date" id="bulkEnd">
+                                <span class="error" id="bulkEndError"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="bulkDuties">Duties:</label></td>
+                            <td>
+                                <textarea id="bulkDuties" rows="2" maxlength="200" placeholder="e.g. Office staff shuttle, 2 cars"></textarea>
+                                <span class="error" id="bulkDutiesError"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="bulkSalary">Offered salary (BDT / month, each driver):</label></td>
+                            <td>
+                                <input type="number" id="bulkSalary" min="5000" max="200000" step="500" placeholder="e.g. 25000">
+                                <span class="error" id="bulkSalaryError"></span>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <button type="submit" id="bulkSubmit" class="hire-submit">Send Request to Agency</button>
+                </fieldset>
+            </form>
+        </section>
+
+
+        <!-- =========================================================
+             C2: MY REQUESTS (direct requests, agency requests, replacements)
+             ========================================================= -->
+        <section id="requestsSection" class="page-section">
+
+            <h2>My Hiring Requests</h2>
+
+            <p class="dashboard-subtitle">
+                View your hiring requests, booking details, and current statuses. Confirm a request after the driver accepts it.
+            </p>
+
+            <p id="requestMessage" class="message" role="status" aria-live="polite"></p>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Request ID</th>
+                            <th scope="col">Driver</th>
+                            <th scope="col">Service / Contract Details</th>
+                            <th scope="col">Dates</th>
+                            <th scope="col">Amount (BDT)</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="requestsBody"></tbody>
+                </table>
+            </div>
+
+            <p>
+                For service bookings, the amount shown is the estimated base amount for the selected quantity. Additional charges must be agreed before hiring.
+            </p>
+
+            <h3 class="section-heading-left">Agency Requests</h3>
+
+            <p class="dashboard-subtitle">Approve or decline the drivers an agency proposed. An agency can never confirm more drivers than you asked for.</p>
+
+            <div id="bulkList"></div>
+
+            <h3 class="section-heading-left">Replacement Decisions</h3>
+
+            <p class="dashboard-subtitle">An agency can propose a different driver for an active contract. The current driver stays until you approve.</p>
+
+            <div id="replacementDecisionList"></div>
+        </section>
+
+
+        <!-- =========================================================
+             C3: MY REVIEWS
+             ========================================================= -->
+        <section id="reviewsSection" class="page-section">
+
+            <h2>My Reviews</h2>
+
+            <p class="dashboard-subtitle">
+                Rate and review a driver after a completed contract. Select an already reviewed contract to update its review.
+            </p>
+
+            <form id="reviewForm" onsubmit="return addReview()" onreset="resetReviewMessage()">
+
+                <fieldset>
+                    <legend>Driver Performance Review</legend>
+
+                    <label for="driverSelect">Completed Contract</label>
+                    <br>
+
+                    <select id="driverSelect" name="contractId" onchange="loadSelectedReview()" required>
+                        <option value="">-- Select Completed Contract --</option>
+                    </select>
+
+                    <br><br>
+
+                    <label for="rating">Rating (1 to 5)</label>
+                    <br>
+
+                    <select id="rating" name="rating" required>
+                        <option value="">-- Select Rating --</option>
+                        <option value="5">5 - Excellent</option>
+                        <option value="4">4 - Good</option>
+                        <option value="3">3 - Average</option>
+                        <option value="2">2 - Poor</option>
+                        <option value="1">1 - Unsatisfactory</option>
+                    </select>
+
+                    <br><br>
+
+                    <label for="review">Written Review</label>
+                    <br>
+
+                    <textarea id="review" name="review" rows="4" cols="40" maxlength="500" placeholder="Write your review..." required></textarea>
+
+                    <br><br>
+
+                    <input type="submit" id="reviewSubmit" value="Save Review">
+
+                    <input type="reset" value="Reset">
+                </fieldset>
+            </form>
+
+            <p id="reviewMessage" role="status" aria-live="polite"></p>
+
+            <h3>Saved Reviews</h3>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Review ID</th>
+                            <th scope="col">Contract</th>
+                            <th scope="col">Driver</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">Written Review</th>
+                            <th scope="col">Visibility</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="reviewsBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        &copy; 2026 DriverDen &middot; CSC 3215 Web Technologies
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/customer.js"></script>
+
+</body>
+
+</html>
