@@ -1,28 +1,3 @@
-/* =====================================================================
-   common.js  -  Helper functions shared by EVERY page
-   ---------------------------------------------------------------------
-   Loaded after data.js and before each page's own script:
-     <script src="js/data.js"></script>
-     <script src="js/common.js"></script>
-     <script src="js/customer.js"></script>   (or driver.js, agency.js ...)
-   An external .js file contains only JavaScript, no <script> tags.
-   ONE copy of every helper lives here; role scripts never redefine them.
-
-   Sections in this file:
-     1. Show one section at a time        6. Current account and role check
-     2. Showing and clearing errors       7. Direct hiring rules (customer
-     3. Message boxes                        and driver pages)
-     4. Display and date helpers          8. Agency rules (agency, driver
-     5. Saved demo data (store) and          and customer pages)
-        getToday()                        9. Shared data check (merge helper)
-   ===================================================================== */
-
-
-/* ---------------------------------------------------------------------
-   1. SHOW ONE SECTION AT A TIME
-   Each dashboard page declares an array called "sections" with the ids
-   of its sections. Clicking a menu button calls showSection("id").
-   --------------------------------------------------------------------- */
 function showSection(sectionId) {
   for (let i = 0; i < sections.length; i++) {
     let section = document.getElementById(sections[i]);
@@ -39,11 +14,6 @@ function showSection(sectionId) {
 }
 
 
-/* ---------------------------------------------------------------------
-   2. SHOWING AND CLEARING ERRORS
-   Every field has a <span class="error" id="fieldIdError"></span>
-   next to it. The message goes in the span; the field gets a red border.
-   --------------------------------------------------------------------- */
 function showError(fieldId, message) {
   document.getElementById(fieldId + "Error").innerHTML = message;
   let field = document.getElementById(fieldId);
@@ -73,9 +43,6 @@ function isEmpty(value) {
 
 /* ---------------------------------------------------------------------
    3. MESSAGE BOXES
-   type is "success", "error" or "info" (these are CSS classes).
-   Errors use role="alert" and the box gets focus, so keyboard and
-   screen-reader users notice the result.
    --------------------------------------------------------------------- */
 function showMessage(boxId, text, type) {
   let box = document.getElementById(boxId);
@@ -96,9 +63,6 @@ function hideMessage(boxId) {
    4. DISPLAY AND DATE HELPERS
    --------------------------------------------------------------------- */
 
-// SAFE RENDERING: anything a user typed (names, reasons) goes through this
-// before it is put into innerHTML, so it shows as plain text and can never
-// become HTML. & < > " ' are replaced by their HTML codes.
 function escapeText(value) {
   return String(value)
     .split("&").join("&amp;")
@@ -189,16 +153,16 @@ function formatDate(dateText) {
     return "-";
   }
   let months = ["January", "February", "March", "April", "May", "June", "July",
-                "August", "September", "October", "November", "December"];
+    "August", "September", "October", "November", "December"];
   let year = dateText.slice(0, 4);
   let month = Number(dateText.slice(5, 7));
   let day = dateText.slice(8, 10);
   return day + " " + months[month - 1] + " " + year;
 }
 
-// 24000 -> "24,000 BDT"
+
 function formatMoney(amount) {
-  return Number(amount).toLocaleString("en-US") + " BDT";
+  return Number(amount).toLocaleString("en") + " BDT";
 }
 
 // Service code -> readable label (labels are in data.js) (Hameem)
@@ -231,26 +195,20 @@ function dateToText(date) {
 
 function addDaysToDate(dateText, days) {
   let date = new Date(Date.UTC(Number(dateText.slice(0, 4)), Number(dateText.slice(5, 7)) - 1,
-                               Number(dateText.slice(8, 10))));
+    Number(dateText.slice(8, 10))));
   date.setUTCDate(date.getUTCDate() + days);
   return dateToText(date);
 }
 
 function addMonthsToDate(dateText, months) {
   let date = new Date(Date.UTC(Number(dateText.slice(0, 4)), Number(dateText.slice(5, 7)) - 1 + months,
-                               Number(dateText.slice(8, 10))));
+    Number(dateText.slice(8, 10))));
   return dateToText(date);
 }
 
 
 /* ---------------------------------------------------------------------
    5. SAVED DEMO DATA (the "store")
-   ---------------------------------------------------------------------
-   ONE key in the browser's localStorage holds the WHOLE demo:
-       driverden.demo.v1
-   Every page reads it when it opens and writes it after every action.
-   That is how a change made as "Driver" appears when you switch to
-   "Customer": both pages read the same saved object.
    --------------------------------------------------------------------- */
 const STORAGE_KEY = "driverden.demo.v1";
 const SCHEMA_VERSION = 1;
@@ -289,11 +247,6 @@ function saveState(nextState) {
   }
 }
 
-/* updateState(callback)
-   1. loads the latest data
-   2. lets the callback change it
-   3. saves it ONLY if the callback did not return { ok: false }
-   So a rule that fails validation never leaves half-changed records. */
 function updateState(callback) {
   let state = getState();
   let result = callback(state);
@@ -309,20 +262,14 @@ function resetDemo() {
   return freshFromSeed();
 }
 
-// Makes a new unique id such as "as-mwp3ep7d1tyn"
 let idCounter = 0;
 function createId(prefix) {
   idCounter++;
   return prefix + "-" + Date.now().toString(36) + idCounter.toString(36) +
-         Math.random().toString(36).slice(2, 5);
+    Math.random().toString(36).slice(2, 5);
 }
 
 
-/* ---------------------------------------------------------------------
-   5b. TODAY'S DATE FOR THE WHOLE PROJECT
-   Use getToday() everywhere (hire form, availability, agency rules)
-   instead of new Date(), so every page agrees on the same day.
-   --------------------------------------------------------------------- */
 function getToday() {
   if (USE_FIXED_TODAY) {
     return DEMO_TODAY;
@@ -337,8 +284,7 @@ function getToday() {
 
 
 /* ---------------------------------------------------------------------
-   6. CURRENT ACCOUNT AND ROLE CHECK
-   (Demo convenience only - this is NOT security.)
+   CURRENT ACCOUNT AND ROLE CHECK
    --------------------------------------------------------------------- */
 function currentUser() {
   let s = getState();
@@ -351,8 +297,7 @@ function currentUser() {
 }
 
 // The login page calls this after it has found the account, so every
-// other page knows who is using it. (Hameem's real login should call it
-// right before redirecting.)
+// other page knows who is using it. 
 function setCurrentUser(userId) {
   updateState(function (s) {
     s.session.currentUserId = userId;
@@ -382,12 +327,6 @@ function requireRole(role) {
 
 /* =====================================================================
    7. DIRECT HIRING RULES  (customer page and driver page)
-   ---------------------------------------------------------------------
-   Plan flow:  customer sends (pending) -> driver accepts (accepted) or
-   declines -> customer CONFIRMS (confirmed) -> ONE contract is created.
-   An accepted request is NOT a contract yet. Only pending requests can
-   be cancelled. Same contract as the agency rules: return ruleFail()
-   without changing anything, or change s and return ruleOk().
    ===================================================================== */
 
 // A contract or date range with no end date counts as running forever,
@@ -399,7 +338,7 @@ function isHireableDriver(s, driverId) {
   let user = findUserRecord(s, driverId);
   let profile = getDriverProfile(s, driverId);
   return user !== null && user.role === "driver" && user.status === "active" &&
-         profile !== null && profile.verificationStatus === "approved";
+    profile !== null && profile.verificationStatus === "approved";
 }
 
 // The work a driver has already agreed to: active contracts + accepted requests
@@ -418,7 +357,6 @@ function driverCommitments(s, driverId, ignoreRequestId) {
   return list;
 }
 
-// Akash's eligibility check, now on the shared data. "" = OK, otherwise the reason.
 function hiringBlockReason(s, request) {
   let profile = getDriverProfile(s, request.driverId);
   let user = findUserRecord(s, request.driverId);
@@ -429,15 +367,15 @@ function hiringBlockReason(s, request) {
   }
   for (const slot of s.availability) {
     if (slot.driverId === request.driverId && String(slot.type).toLowerCase() === "unavailable" &&
-        datesOverlap(request.startDate, request.endDate, slot.startDate, slot.endDate || OPEN_ENDED)) {
+      datesOverlap(request.startDate, request.endDate, slot.startDate, slot.endDate || OPEN_ENDED)) {
       return "The driver is marked Unavailable from " + formatDate(slot.startDate) + " to " +
-             formatDate(slot.endDate) + ", which overlaps this request.";
+        formatDate(slot.endDate) + ", which overlaps this request.";
     }
   }
   for (const job of driverCommitments(s, request.driverId, request.id)) {
     if (datesOverlap(request.startDate, request.endDate, job.startDate, job.endDate)) {
       return "The driver already has \"" + job.title + "\" from " + formatDate(job.startDate) +
-             " to " + formatDate(job.endDate) + ".";
+        " to " + formatDate(job.endDate) + ".";
     }
   }
   return "";
@@ -452,7 +390,7 @@ function createHiringRequest(s, details) {
   if (details.startDate < getToday()) { return ruleFail("Please choose today or a future start date."); }
   for (const r of s.hiringRequests) {
     if (r.customerId === details.customerId && r.driverId === details.driverId &&
-        r.startDate === details.startDate && (r.status === "pending" || r.status === "accepted")) {
+      r.startDate === details.startDate && (r.status === "pending" || r.status === "accepted")) {
       return ruleFail("You already have an open request for this driver on this date.");
     }
   }
@@ -520,21 +458,6 @@ function cancelHiringRequest(s, requestId) {
 
 /* =====================================================================
    8. AGENCY RULES  (written by Zinia)
-   ---------------------------------------------------------------------
-   WHY THESE LIVE IN common.js
-   The "yes" clicks for the agency features happen on OTHER pages:
-     - Driver accepts invitations / jobs / replacements  -> driver.html (Akash)
-     - Customer approves drivers / replacements          -> customer.html (Hameem)
-   If each page wrote its own version, one could forget the headcount
-   limit or the date re-check. So every page calls these SAME functions.
-
-   CONTRACT FOR EVERY RULE FUNCTION
-   - First argument "s" is the saved data (given by updateState).
-   - Failure: return ruleFail("message") and change NOTHING.
-   - Success: change s, add an activityLog entry, return ruleOk({ ... }).
-   Used like this from any page:
-     let result = updateState(function (s) { return inviteDriver(s, agencyId, driverId); });
-     if (result.ok === false) { showMessage("box", result.error, "error"); }
    ===================================================================== */
 
 /* ---------- tiny helpers ---------- */
@@ -630,24 +553,18 @@ function agencyIdForContract(s, contract) {
   return null;   // direct contracts have no agency
 }
 
-/* ---------- eligibility: returns null when OK, otherwise a reason ---------- */
-
-// SAFETY: a contract saved without an end date is treated as running
-// forever (OPEN_ENDED, section 7), so it still blocks the driver. The
-// availability type is compared in lowercase, so "Unavailable" counts too.
-
 function conflictReason(s, driverId, start, end, ignoreContractId) {
   for (const c of s.contracts) {
     let contractEnd = c.endDate || OPEN_ENDED;
     if (c.driverId === driverId && c.status === "active" && c.id !== ignoreContractId &&
-        datesOverlap(start, end, c.startDate, contractEnd)) {
+      datesOverlap(start, end, c.startDate, contractEnd)) {
       return c.endDate ? "Already booked " + c.startDate + " to " + c.endDate
-                       : "Already booked from " + c.startDate + " (no end date)";
+        : "Already booked from " + c.startDate + " (no end date)";
     }
   }
   for (const a of s.availability) {
     if (a.driverId === driverId && String(a.type).toLowerCase() === "unavailable" &&
-        datesOverlap(start, end, a.startDate, a.endDate || OPEN_ENDED)) {
+      datesOverlap(start, end, a.startDate, a.endDate || OPEN_ENDED)) {
       return "Marked unavailable " + a.startDate + " to " + a.endDate;
     }
   }
@@ -683,12 +600,6 @@ function inviteBlockReason(s, agencyId, driverId) {
 }
 
 
-/* =====================================================================
-   G1  ROSTER / MEMBERSHIP
-   invited -> active | declined ;  active -> removed
-   ===================================================================== */
-
-// Called by: agency.js (Roster section)
 function inviteDriver(s, agencyId, driverId) {
   let agency = findRecord(s.agencies, agencyId);
   if (!agency) { return ruleFail("Agency not found."); }
@@ -806,11 +717,6 @@ function addDriverToRoster(s, agencyId, driverData) {
   return ruleOk({ user: user, profile: profile, membership: membership });
 }
 
-/* =====================================================================
-   G2  BULK STAFFING
-   assignment: proposed -> accepted -> confirmed ; proposed -> declined
-   The bulk request status is WORKED OUT from the confirmed assignments.
-   ===================================================================== */
 
 function confirmedCount(s, bulkRequestId) {
   let count = 0;
@@ -835,7 +741,6 @@ function refreshBulkStatus(s, request) {
 }
 
 // Called by: agency.js (Staffing requests section)
-// NOTE: proposing does NOT use up headcount. You may propose 3 for a 2-person request.
 function proposeAssignment(s, bulkRequestId, driverId) {
   let request = findRecord(s.bulkRequests, bulkRequestId);
   if (!request) { return ruleFail("Request not found."); }
@@ -907,13 +812,6 @@ function declineAssignmentAsCustomer(s, assignmentId) {
   return ruleOk({ assignment: a });
 }
 
-
-/* =====================================================================
-   G3  REPLACEMENTS
-   pending -> approved (needs BOTH yeses) | rejected | cancelled
-   The original contract stays ACTIVE until approval.
-   ===================================================================== */
-
 // Remaining dates of a contract = from the later of (start, today) to end.
 // Returns null when nothing is left (or the contract has no end date).
 function remainingRange(contract) {
@@ -966,7 +864,7 @@ function finaliseReplacement(s, rep) {
   let range = remainingRange(original);
   if (!range) { return ruleFail("The original contract has no remaining dates."); }
   let why = staffingBlockReason(s, agencyIdForContract(s, original), rep.replacementDriverId,
-                                range.start, range.end, original.id);
+    range.start, range.end, original.id);
   if (why) { return ruleFail("Cannot approve: replacement driver - " + why + "."); }
 
   let newContract = {
@@ -1022,27 +920,21 @@ function cancelReplacement(s, replacementId) {
 
 /* =====================================================================
    9. SHARED DATA CHECK  (merge helper)
-   ---------------------------------------------------------------------
-   The agency rules only work if everyone saves the SAME words. This
-   function lists records whose status (or type) is not one of the agreed
-   words, or contracts without dates. Pages call it once at start-up and
-   print each problem with console.warn, so a mismatch after merging shows
-   up in the Console instead of silently breaking a rule.
    ===================================================================== */
 const ALLOWED_VALUES = {
-  users:                   { field: "status", values: ["active", "suspended"] },
-  driverProfiles:          { field: "verificationStatus", values: ["pending", "approved", "rejected"] },
-  agencies:                { field: "verificationStatus", values: ["pending", "approved", "rejected"] },
-  availability:            { field: "type", values: ["available", "unavailable"] },
-  hiringRequests:          { field: "status", values: ["pending", "accepted", "declined", "cancelled", "confirmed"] },
-  bulkRequests:            { field: "status", values: ["open", "partially_filled", "filled", "cancelled"] },
-  memberships:             { field: "status", values: ["invited", "active", "declined", "removed"] },
-  assignments:             { field: "status", values: ["proposed", "accepted", "confirmed", "declined"] },
-  contracts:               { field: "status", values: ["active", "completed", "replaced", "cancelled"] },
-  replacements:            { field: "status", values: ["pending", "approved", "rejected", "cancelled"] },
+  users: { field: "status", values: ["active", "suspended"] },
+  driverProfiles: { field: "verificationStatus", values: ["pending", "approved", "rejected"] },
+  agencies: { field: "verificationStatus", values: ["pending", "approved", "rejected"] },
+  availability: { field: "type", values: ["available", "unavailable"] },
+  hiringRequests: { field: "status", values: ["pending", "accepted", "declined", "cancelled", "confirmed"] },
+  bulkRequests: { field: "status", values: ["open", "partially_filled", "filled", "cancelled"] },
+  memberships: { field: "status", values: ["invited", "active", "declined", "removed"] },
+  assignments: { field: "status", values: ["proposed", "accepted", "confirmed", "declined"] },
+  contracts: { field: "status", values: ["active", "completed", "replaced", "cancelled"] },
+  replacements: { field: "status", values: ["pending", "approved", "rejected", "cancelled"] },
   verificationSubmissions: { field: "status", values: ["pending", "approved", "rejected"] },
-  reviews:                 { field: "visibility", values: ["public", "hidden"] },
-  complaints:              { field: "status", values: ["open", "in_review", "resolved"] }
+  reviews: { field: "visibility", values: ["public", "hidden"] },
+  complaints: { field: "status", values: ["open", "in_review", "resolved"] }
 };
 
 function checkSharedData(s) {
@@ -1058,7 +950,7 @@ function checkSharedData(s) {
       let value = record[rule.field];
       if (rule.values.indexOf(value) === -1) {
         problems.push(listName + " " + (record.id || record.driverId) + ": " + rule.field +
-                      " is \"" + value + "\" (expected one of: " + rule.values.join(", ") + ")");
+          " is \"" + value + "\" (expected one of: " + rule.values.join(", ") + ")");
       }
     }
   }
