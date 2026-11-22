@@ -46,9 +46,8 @@
                     onsubmit="return validateSignup()"
                     return false -> the form is NOT sent, the user stays here
                     return true  -> the browser opens the page in "action".
-                    After a valid registration the demo opens the login page.
                 -->
-                <form id="signupForm" action="login.html" method="get" onsubmit="return validateSignup()">
+                <form id="signupForm" action="login.html" method="get" onsubmit="return validateSignup()" novalidate>
 
                     <fieldset>
                         <legend>Your details</legend>
@@ -56,35 +55,40 @@
                         <div class="form-group">
                             <label for="role">Register As</label>
 
-                            <select id="role" required>
+                            <select id="role">
                                 <option value="customer">Customer (Individual / Business)</option>
                                 <option value="driver">Professional Driver</option>
                                 <option value="agency">Transport Agency</option>
                             </select>
+                            <span class="error" id="roleError"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="fullName">Full Name</label>
 
-                            <input type="text" id="fullName" name="fullName" placeholder="e.g. Sabiha Jahan" required>
+                            <input type="text" id="fullName" name="fullName" placeholder="e.g. Sabiha Jahan">
+                            <span class="error" id="fullNameError"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email Address</label>
 
-                            <input type="email" id="email" name="email" placeholder="sabiha@driverden.com" required>
+                            <input type="email" id="email" name="email" placeholder="sabiha@driverden.com">
+                            <span class="error" id="emailError"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
 
-                            <input type="tel" id="phone" name="phone" placeholder="+880 1700-000000" required>
+                            <input type="tel" id="phone" name="phone" placeholder="+880 1700-000000">
+                            <span class="error" id="phoneError"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="password">Password</label>
 
-                            <input type="password" id="password" placeholder="At least 6 characters" required>
+                            <input type="password" id="password" placeholder="At least 6 characters">
+                            <span class="error" id="passwordError"></span>
                         </div>
                     </fieldset>
 
@@ -97,6 +101,8 @@
                     Already registered? <a href="login.html">Sign in here</a>
                 </p>
             </div>
+
+        </div>
     </main>
 
     <!-- ============ FOOTER ============ -->
@@ -106,7 +112,7 @@
 
     <script src="js/data.js"></script>
     <script src="js/common.js"></script>
-    <script src="js/login.js"></script>
+    <script src="js/register.js"></script>
 
 </body>
 
